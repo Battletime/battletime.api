@@ -1,9 +1,10 @@
-var express = require('express');
-var router = express.Router();
+var mongoose = require('mongoose');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+module.exports = function(app, data){
 
-module.exports = router;
+    app.use('/',  require('./home'));
+    app.use('/test',  require('./test'));
+    app.use('/events',  require('./events'));
+    app.use('/auth', require('./auth'));
+
+}
