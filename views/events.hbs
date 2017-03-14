@@ -1,0 +1,14 @@
+<h2>Events</h2>
+
+
+<table>
+    <body>
+        {{#events}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{date}}</td>
+                <td><a href="/events/{{_id}}">Details</a>
+            </tr>
+        {{/events}}
+    </body>
+</table>

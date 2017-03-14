@@ -7,19 +7,19 @@ var eventCtrl = require('../controllers/EventController')();
 /* GET home page. */
 router.get('/', function(req, res, next) {
     eventCtrl.get().then( (events) => {
-        res.json(events);
+        res.send(events);
     });
 });
 
 router.get('/:id', (req, res) => {
     eventCtrl.getDetails(req.params.id).then( (event) => {
-        res.json(event);
+        res.send(event);
     });
 });
 
 router.post('/:secret/participants', (req, res) => {
     eventCtrl.signUp(req.params.secret, req.body.userId).then( (event) => {
-        res.json(event);
+        res.send(event);
     });
 });
 

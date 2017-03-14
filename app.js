@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 //non default packages
+var exphbs  = require('express-handlebars');
 var mongoose = require('mongoose');
 var cors = require('cors');
 // var passport = require('passport');
@@ -20,6 +21,11 @@ var app = express();
 
 //cors
 app.use(cors());
+
+//handlebars
+app.engine('.hbs', exphbs({extname: '.hbs', defaultLayout: 'main'}));
+app.set('view engine', '.hbs');
+app.use(express.static('public')); //static files like css
 
 
 //passport
@@ -36,8 +42,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 require('./models')(app); //load all the models
-require('./routes')(app); //load all the routes
+require('./routes/_index')(app); //load all the routes
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
