@@ -20,7 +20,7 @@ module.exports = function(){
                     return reject(err);
 
                 event.qrImage = generateQr(event.secret);
-                event.secret = undefined;
+                //event.secret = undefined;
                 resolve(event);
             });
         });

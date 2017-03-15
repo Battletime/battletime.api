@@ -18,7 +18,9 @@ router.get('/:id', (req, res) => {
 });
 
 router.post('/:secret/participants', (req, res) => {
-    eventCtrl.signUp(req.params.secret, req.body.userId).then( (event) => {
+    var userId = 1;  //get user id from session
+    eventCtrl.signUp(req.params.secret, userId).then( (event) => {
+        req.broadcast.signup(2);
         res.send(event);
     });
 });

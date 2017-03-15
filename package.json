@@ -24,6 +24,7 @@
     "promise": "^7.1.1",
     "qrcode-npm": "0.0.3",
     "serve-favicon": "~2.3.2",
+    "socket.io": "^1.7.3",
     "underscore": "^1.8.3"
   }
 }

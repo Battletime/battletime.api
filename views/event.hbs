@@ -1,10 +1,19 @@
-<h2>{{event.name}}</h2>
+<div ng-controller="EventCtrl" ng-init='initialize({{toJson event}})'>
 
-{{{event.qrImage}}}
+    <h2>{{event.name}}</h2>
 
-<ul>
-    {{#event.participants}}
-        <li>{{this}}</li>
-    {{/event.participants}}
-</ul>
+    <p ng-bind="msg"></p>
 
+
+    {{{event.qrImage}}}
+
+    <h3>Users</h3>
+    
+    <ul>
+        <li ng-repeat="user in event.participants track by $index" ng-bind="user">
+        </li>
+    </ul>
+        
+    {{!--<button ng-click="aanmelden('{{event.secret}}')" >Aanmdelen</button>--}}
+
+</div>

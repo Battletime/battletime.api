@@ -20,11 +20,15 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+/**
+ * !! dit is mijn require !!
+ */
+require('../core/sockets')(app, server);
+
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);

@@ -23,7 +23,9 @@ var app = express();
 app.use(cors());
 
 //handlebars
-app.engine('.hbs', exphbs({extname: '.hbs', defaultLayout: 'main'}));
+app.engine('.hbs', exphbs({extname: '.hbs', defaultLayout: 'main', helpers: {
+  toJson: (obj) => {return JSON.stringify(obj, null, 3)},
+}}));
 app.set('view engine', '.hbs');
 app.use(express.static('public')); //static files like css
 
@@ -42,6 +44,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//make broadcast easy accesiable
+app.use(function(req, res, next){ 
+  req.broadcast = app.get('broadcast'); 
+  next(); 
+});
 
 require('./models')(app); //load all the models
 require('./routes/_index')(app); //load all the routes
@@ -52,18 +59,6 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 // error handler
 app.use(function(err, req, res, next) {

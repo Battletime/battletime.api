@@ -4,10 +4,19 @@
     <meta charset="utf-8">
     <title>Example App</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+    </script>
+     <script src="/js/portal.js"></script>
+
 </head>
-<body>
+<body  ng-app="portal">
  
     {{{body}}}
  
 </body>
+
 </html>
