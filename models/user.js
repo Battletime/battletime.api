@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 module.exports = mongoose.model('User', new Schema({ 
     _id: String,
     name: String, 
-    username: String,
-    admin: Boolean 
+    googleImageUri: String,
+    userName: String,
+    role: String, 
 }));

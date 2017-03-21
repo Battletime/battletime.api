@@ -1,11 +1,9 @@
 module.exports = function(io){
 
-    var self = {
-        io: io
-    };
+    var self = {};
 
     self.signup = function(user){
-        self.io.emit('signup', user);
+        io.emit('signup', user);
     }
 
     return self;

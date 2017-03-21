@@ -5,10 +5,8 @@ module.exports = function(app, server){
 
     //retrieve http-server from app
     var io = require('socket.io')(server);
-    broadcast = require('./broadcastService')(io);
+    broadcast = require('./broadcastService')(io); //custom
     io.on('connection', function(socket){
-        
     });
-
     app.set('broadcast', broadcast);    
 }

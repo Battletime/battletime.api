@@ -6,38 +6,23 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 //non default packages
-var exphbs  = require('express-handlebars');
 var mongoose = require('mongoose');
 var cors = require('cors');
-// var passport = require('passport');
-//var flash = require('connect-flash');
-//var session= require('express-session');
+var passport = require('passport');
 
 //database
 var configDb = require('./config/database');
 mongoose.connect(configDb.url);
 
+//use cors
 var app = express();
 
-//cors
+//app config
+require('./models/_index')(app); //load all the models
+require('./config/handlebars')(app);
+require('./config/passport')(passport);
 app.use(cors());
-
-//handlebars
-app.engine('.hbs', exphbs({extname: '.hbs', defaultLayout: 'main', helpers: {
-  toJson: (obj) => {return JSON.stringify(obj, null, 3)},
-}}));
-app.set('view engine', '.hbs');
-app.use(express.static('public')); //static files like css
-
-
-//passport
-//app.use(session({ secret: 'ilovescotchscotchyscotchscotch' })); // session secret
-//app.use(passport.initialize());
-//app.use(passport.session()); // persistent login sessions
-//app.use(flash()); // use connect-flash for flash messages stored in session
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(passport.initialize());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -50,7 +35,6 @@ app.use(function(req, res, next){
   next(); 
 });
 
-require('./models')(app); //load all the models
 require('./routes/_index')(app); //load all the routes
 
 // catch 404 and forward to error handler
