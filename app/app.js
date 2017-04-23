@@ -1,9 +1,21 @@
-angular.module('battletime-portal', ["ngRoute"])
-.config(function($routeProvider) {
+angular.module('battletime-portal', ["ui.router"])
+.config(function($stateProvider, $urlRouterProvider) {
 
-    $routeProvider
-        .when("/", {
-            templateUrl : "templates/portal/portal.comp.html"
-        })
+    function getCompState(name){
+        return {
+            name: name,
+            url: '/' + name,
+            templateUrl: 'templates/' + name + '/' + name + '.comp.html'
+        }
+    }
 
-}); 
+    $stateProvider.state(getCompState("portal"));
+    $stateProvider.state(getCompState("events"));
+
+    $urlRouterProvider.otherwise(function($injector) {
+        var $state = $injector.get('$state');
+        $state.go('portal');
+    });
+
+
+});

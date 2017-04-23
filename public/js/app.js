@@ -1,24 +1,34 @@
-angular.module('battletime-portal', ["ngRoute"])
-.config(function($routeProvider) {
+angular.module('battletime-portal', ["ui.router"])
+.config(function($stateProvider, $urlRouterProvider) {
 
-    $routeProvider
-        .when("/", {
-            templateUrl : "templates/portal/portal.comp.html"
-        })
-
-}); 
-angular.module('battletime-portal')
-.controller('EventsCtrl', function($scope, $http, $window){
-    $scope.msg = "hello";
-
-    $scope.initialize = function(event){
-        $scope.event = event;
+    function getCompState(name){
+        return {
+            name: name,
+            url: '/' + name,
+            templateUrl: 'templates/' + name + '/' + name + '.comp.html'
+        }
     }
 
-    $window.socket.on('signup', function(event){
-        $scope.event.participants.push('' + 2);
-         $scope.$apply(); //scope modified outside angular context
+    $stateProvider.state(getCompState("portal"));
+    $stateProvider.state(getCompState("events"));
+
+    $urlRouterProvider.otherwise(function($injector) {
+        var $state = $injector.get('$state');
+        $state.go('portal');
     });
+
+
+});
+
+angular.module('battletime-portal')
+.controller('EventsCtrl', function($scope, $http, $window){
+    
+    $scope.msg = "hello";
+
+    // $window.socket.on('signup', function(event){
+    //     $scope.event.participants.push('' + 2);
+    //      $scope.$apply(); //scope modified outside angular context
+    // });
 
     $scope.aanmelden = function(secret){
         $http.post('http://localhost:3000/api/events/'+secret+'/participants')
