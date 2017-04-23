@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "concurrently --kill-others \"nodemon ./bin/www\" \"gulp\""
   },
   "dependencies": {
     "body-parser": "~1.16.0",
@@ -26,5 +26,13 @@
     "serve-favicon": "~2.3.2",
     "socket.io": "^1.7.3",
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "concurrently": "^3.4.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-copy": "^1.0.0",
+    "gulp-watch": "^4.3.11"
   }
 }

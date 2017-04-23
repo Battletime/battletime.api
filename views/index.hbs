@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <title>Example App</title>
     <link href="/css/style.css" rel="stylesheet" type="text/css" />
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
     
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
     
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -18,15 +18,14 @@
         })
     </script>
 
-
-
-
-     <script src="/js/portal.js"></script>
+     <script src="/js/app.js"></script>
 
 </head>
-<body  ng-app="portal">
+<body  ng-app="battletime-portal">
  
-    {{{body}}}
+    <h2>Battletime</h2>
+
+    <div ng-view ></div>
  
 </body>
 

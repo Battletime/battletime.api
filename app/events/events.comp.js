@@ -1,9 +1,6 @@
-angular.module('portal', [])
-
-.controller('EventCtrl', function($scope, $http, $window){
+angular.module('battletime-portal')
+.controller('EventsCtrl', function($scope, $http, $window){
     $scope.msg = "hello";
-
-
 
     $scope.initialize = function(event){
         $scope.event = event;
