@@ -1,7 +1,68 @@
-<h2>Portal</h2>
+<div ng-controller="PortalCtrl" >
 
-<p>Welkom op de portal</p>
+<div class="row" ng-show="auth.user">
+    <h2>Welcome {{auth.user.username}}</h2>
 
-<div ng-controller="PortalCtrl">
-    {{msg}}
+     <button type="submit" class="btn btn-warning btn-lg" ng-click="logout()">Logout</button>
+</div>
+    
+<div class="row" ng-show="!auth.user">
+    <h2>Welcome to battletime</h2>
+
+    <div class="col-sm-6" >
+
+        <h1><span class="fa fa-sign-in"></span> Login</h1>
+
+        <ul>
+            <li class="text-danger" ng-repeat="error in login.errors">{{error}}</li>
+        </ul>
+
+        <!-- LOGIN FORM -->
+        <form ng-submit="sendLogin()" method="post">
+            <div class="form-group">
+                <label>Username</label>
+                <input required type="text" ng-model="login.username" class="form-control" name="username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input required type="password"  ng-model="login.password" class="form-control" name="password">
+            </div>
+
+            <button type="submit" class="btn btn-warning btn-lg">Login</button>
+        </form>
+
+        <hr>
+
+    </div>
+
+    <div class="col-sm-6" >
+
+        <h1><span class="fa fa-sign-in"></span> Signup</h1>
+
+        <ul>
+            <li class="text-danger" ng-repeat="error in signup.errors">{{error}}</li>
+        </ul>
+
+        <!-- LOGIN FORM -->
+        <form ng-submit="sendSignup()" method="post">
+            <div class="form-group">
+                <label>Username</label>
+                <input required type="text" ng-model="signup.username" class="form-control" name="username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input required type="password" ng-model="signup.password" class="form-control" name="password">
+            </div>
+            <div class="form-group">
+                <label>Password repeat</label>
+                <input required type="password" ng-model="signup.repeat" class="form-control" name="password">
+            </div>
+
+            <button type="submit" class="btn btn-warning btn-lg">Signup</button>
+        </form>
+
+        <hr>
+    </div>
+</div>
+
 </div> 

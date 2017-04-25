@@ -4,7 +4,7 @@ var watch = require('gulp-watch')
 var watch = require('gulp-copy')
 
 gulp.task('js', function () {
-  gulp.src(['app/**/module.js', 'app/**/*.js'])
+  gulp.src(['app/**/app.js', 'app/**/*.js'])
     .pipe(concat('app.js'))
     .pipe(gulp.dest('public/js'))
 })

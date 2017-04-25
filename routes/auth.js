@@ -1,23 +1,65 @@
 var router = require('express').Router();
 var passport = require('passport');
-var jwt = require('jsonwebtoken');
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 
-router.get('/local', function(req, res, next){
+router.post('/signup', function(req, res, next){
 
+    // we are checking to see if the user trying to login already exists
+    User.findOne({ 'username' :  req.body.username }, function(err, user) {
+
+        
+
+        // if there are any errors, return the error
+        if (err)
+            return res.status(500).send({ form: { username: req.body.username}, errors: ["Ow noes! Something went wrong!"]});
+
+        // check to see if theres already a user with that username
+        if (user) {
+              return res.status(400).send({errors: ["That username is already taken."]});
+        } else {
+
+            // if there is no user with that username
+            // create the user
+            var newUser = new User();
+
+            // set the user's local credentials
+            newUser.username =  req.body.username;
+            newUser.password = newUser.generateHash(req.body.password);
+            newUser.role = "user";
+
+            newUser.save(function(err, user){
+                console.log(newUser);
+                if(err){
+                    return res.status(500).send({ form: err, errors: ["Oops, something went wrong!"]});
+                }
+
+                res.json(user.toToken()); 
+            });
+
+
+        }
+    });    
 });
+  
 
-router.post('/local', function(req, res, next) {
-  passport.authenticate('local', function(err, user, info) {
-    if (err) { return next(err) }
-    if (!user) {
-      return res.json(401, { error: 'message' });
-    }
+router.post('/login', function(req, res, next) {
+    
+    // we are checking to see if the user trying to login already exists
+    User.findOne({ 'username' :  req.body.username }, function(err, user) {
 
-    //user has authenticated correctly thus we create a JWT token 
-    var token = jwt.encode({ username: 'somedata'}, "pointypony");
-    res.json({ token : token });
+        if(!user){
+             return res.status(401).json({ errors: ['Wrong credentials'] });
+        }
 
-  })(req, res, next);
+        if(!user.compareHash(req.body.password)){
+            return res.status(401).json({ errors: ['Wrong credentials' ]});
+        }
+        else{
+            res.json(user.toToken());
+        }
+
+    })
 });
 
 router.get('/google', passport.authenticate('google', { 

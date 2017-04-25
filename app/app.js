@@ -16,6 +16,4 @@ angular.module('battletime-portal', ["ui.router"])
         var $state = $injector.get('$state');
         $state.go('portal');
     });
-
-
-});
+}); 

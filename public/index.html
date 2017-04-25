@@ -25,7 +25,7 @@
     <script src="/js/app.js"></script>
 
 </head>
-<body  ng-app="battletime-portal">
+<body  ng-app="battletime-portal" ng-controller="AppCtrl">
 
     <div class="navbar navbar-inverse">
         <div class="navbar-header">
@@ -36,11 +36,16 @@
             </button>
             <a class="navbar-brand" ui-sref="portal">Battletime</a>
         </div>
-        <div class="navbar-collapse collapse navbar-inverse-collapse">
-            <ul class="nav navbar-nav">
+        <div class="navbar-collapse collapse" >
+            <ul class="nav navbar-nav" ng-show="auth.user">
                 <li ui-sref-active="active"><a ui-sref="events">Events</a></li>
                 <li ui-sref-active="active"><a ui-sref="battles">Battles</a></li>
             </ul>
+            <p class="navbar-text navbar-right" ng-show="auth.user">
+                Signed in as <a class="navbar-link" ui-sref-active="portal" ui-sref="portal">{{auth.user.username}}</a>
+            </p>  
+            <button class="btn btn-primary navbar-right" ng-show="!auth.user">Login</button>
+        </div>
         </div>
     </div>
     
