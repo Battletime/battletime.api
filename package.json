@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "concurrently --kill-others \"nodemon ./bin/www\" \"gulp\""
+    "start": "node ./bin/www",
+    "development": "concurrently --kill-others \"nodemon ./bin/www\" \"gulp\""
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
