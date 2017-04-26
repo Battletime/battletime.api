@@ -1,0 +1,36 @@
+<div ng-controller="EventDetailsCtrl"> 
+    <div ng-show"event">
+        <h2>{{event.name}}</h2>
+    </div>
+
+    <div ng-bind-html="event.qrImage">
+
+    </div>
+
+    <h4>Add participant</h4>
+
+    <form ng-submit="addParticipant(selectedUser)">
+        <div class="form-inline">
+            <select class="form-control" ng-model="selectedUser" required>
+                <option ng-repeat="user in users" value="{{user._id}}">{{user.username}}</option>
+            </select>
+            <input type="submit" class="btn btn-success" value="Add">
+        </div>
+    </form>
+
+    <h4>All participants ({{event.participant.length}})</h4>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>name</td>
+                <td></td>
+        </thead>
+        <tbody>
+            <tr ng-repeat="user in event.participants track by $index">
+                <td>{{user.username}}</td><td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

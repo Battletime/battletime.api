@@ -14,6 +14,10 @@ var passport = require('passport');
 var configDb = require('./config/database');
 mongoose.connect(configDb.url);
 
+//require models
+require('./models/user');
+require('./models/event');
+
 //use cors
 var app = express();
 

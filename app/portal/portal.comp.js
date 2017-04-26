@@ -14,14 +14,18 @@ angular.module('battletime-portal')
 
     $scope.sendSignup = function(){
         authService.Signup($scope.signup).then(
-        (user) => {}, 
-        (response) => {
-            $scope.signup.errors = response.errors
-        });
+            (user) => {
+                $scope.signup.password = null;
+                $scope.signup.repeat = null; 
+            }, 
+            (response) => {
+                $scope.signup.errors = response.errors;
+                //empty password fiels
+                $scope.signup.password = null;
+                $scope.signup.repeat = null; 
+            });
 
-        //empty password fiels
-        $scope.signup.password = null;
-        $scope.signup.repeat = null; 
+    
         
     }
 

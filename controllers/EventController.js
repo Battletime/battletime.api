@@ -9,13 +9,24 @@ module.exports = function(){
 
     var self = {};
 
+    //CREATE
+    self.create = function(event){
+        var newEvent = Event(event);
+        newEvent.secret = Guid.raw();
+        return newEvent.save();
+    }
+
+    //READ
     self.get = function(){
         return Event.find();
     }
 
+    //READ ONE
     self.getDetails = function(id){
         return new Promise(function (resolve, reject) {
-            Event.findById(id).exec( (err, event) => {   
+            Event.findById(id)
+                .populate('participants')
+                .exec( (err, event) => {   
                 if(err)
                     return reject(err);
 
@@ -26,34 +37,53 @@ module.exports = function(){
         });
     }
 
+    //UPDATE
     self.update = function(id, event){
         //todo: implement
     }
 
-    self.create = function(event){
-        var newEvent = Event(event);
-        newEvent.secret = Guid.raw();
-        return newEvent.save();
-    }
-
+    //DELETE
     self.delete = function(id){
         //todo: implement
     }
 
-    self.signUp = function(secret, userId){
+    //OTHER
+    self.action = function(id, action){
          return new Promise(function (resolve, reject) {
-            Event.findOne({secret: secret}).exec( (err, event) => {  
-                if(err) return reject(err);
+            Event.findById(id).exec( (err, event) => {   
+                if(err)
+                    return reject(err);
 
-                if(!_.contains(event.participants, "" + userId)){
-                    event.participants.push(userId);
-                    event.save( (err, event) => resolve(event));
-                }
-                else{
-                    resolve(event);
+                switch(action){
+                    case "start":  event.startedOn = new Date();;break;
+                    case "stop":  event.stoppedOn = new Date();;break;
+                    case "reset":  event.reset();break;
+                    default: break;
                 }
 
+                event.save((err, event) =>  resolve(event));
+               
             });
+        });
+    }
+   
+    self.signUp = function(eventId, userId){
+         return new Promise(function (resolve, reject) {
+            Event.findById(eventId)
+                .exec( (err, event) => {  
+                    if(err) return reject(err);
+
+                    if(!_.contains(event.participants, "" + userId)){
+                        event.participants.push(userId);
+                        event.save( (err, event) => {
+                            resolve(event) 
+                        });
+
+                    }
+                    else{
+                        resolve(event);
+                    }
+                });
          });      
     }
 

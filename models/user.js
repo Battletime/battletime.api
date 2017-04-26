@@ -5,8 +5,8 @@ var jwt = require('jwt-simple');
 
 var userSchema = new Schema({ 
     name: String, 
-    ImageUri: String,
-    username: { type: String, unique: true },
+    imageUri: String,
+    username: { type: String, unique: true, required: true },
     email: String,
     password:String,
     role: String, 
@@ -15,13 +15,14 @@ var userSchema = new Schema({
 // methods ======================
 // generating a hash
 userSchema.methods.generateHash = function(password) {
+    console.log(password);
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 // methods ======================
 // compare a hash
 userSchema.methods.compareHash = function(password) {
-    console.log(this.password);
+    console.log(password);
     var areEqual = bcrypt.compareSync(password, this.password);
     console.log(areEqual);
     return areEqual; 
@@ -30,11 +31,13 @@ userSchema.methods.compareHash = function(password) {
 
 userSchema.methods.toToken = function(){
     //user has authenticated correctly thus we create a JWT token 
-    var token = jwt.encode({ username: this.username}, "pointypony");
+    var token = jwt.encode({ username: this._id, role: this.role}, "pointypony");
 
     return { 
         username: this.username,
-        token: token
+        token: token,
+        role: this.role,
+        imageUri: this.imageUri
     };
 }
 

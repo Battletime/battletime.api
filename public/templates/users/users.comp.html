@@ -1,0 +1,33 @@
+<div ng-controller="UsersCtrl"> 
+    <h2>Users</h2>
+
+    <h4>New user</h4>
+
+    <form ng-submit="addUser()">
+        <div class="form-inline">
+            <input class="form-control" type="text" ng-model="newUser.username" required>
+            <input type="submit" class="btn btn-success" value="Add">
+        </div>
+    </form>
+
+    <h4>All users</h4>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td>name</td>
+                <td>role</td>
+                <td>type</td>
+        </thead>
+        <tbody>
+            <tr>
+                <td col-span="5" class="text-center" ng-show="!users">Loading users...</td>
+            </tr>
+            <tr ng-repeat="user in users track by $index">
+                <td>{{user.username}}</td>
+                <td>{{user.role}}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

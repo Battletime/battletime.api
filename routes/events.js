@@ -8,24 +8,37 @@ var eventCtrl = require('../controllers/EventController')();
 router.get('/', function(req, res, next) {
     eventCtrl.get().then( (events) => {
         res.send(events);
-    });
+    }, (err) => res.status(500).send());
 });
 
 router.get('/:id', (req, res) => {
     eventCtrl.getDetails(req.params.id).then( (event) => {
         res.send(event);
-    });
+    }, (err) => res.status(500).send());
 });
 
-router.post('/:secret/participants', (req, res) => {
-    var userId = 1;  //get user id from session
-    eventCtrl.signUp(req.params.secret, userId).then( (event) => {
-        
-        req.broadcast.signup(2);
+router.post('/', (req, res) => {
+    eventCtrl.create(req.body).then( (event) => {
         res.send(event);
-    });
+    }, (err) => res.status(500).send());
 });
 
+router.post('/:id/actions', (req, res) => {
+
+    eventCtrl.action(req.params.id, req.body.action).then((event) => {
+        res.send(event);
+    }, (err) => res.status(500).send());
+
+});
+
+router.post('/:id/participants', (req, res) => { 
+    eventCtrl.signUp(req.params.id, req.body.userId).then( (event) => {     
+        eventCtrl.getDetails(req.params.id).then( (event) => {
+            req.broadcast.signup(event.participants);
+            res.send(event.participants);
+        }, (err) => res.status(500).send());
+    }, (err) => res.status(500).send());
+});
 
 
 module.exports = router;

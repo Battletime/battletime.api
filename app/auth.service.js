@@ -1,7 +1,11 @@
 angular.module('battletime-portal')
-.service('authService', function($http, $q){
+.service('authService', function($http, $q, config){
     
     var self = {};
+
+    self.isAdmin = function() {
+        return this.user && this.user.role == "admin";
+    }
 
     var savedUser = localStorage.getItem("user");
     self.user = savedUser ? JSON.parse(savedUser) : null;
@@ -19,7 +23,7 @@ angular.module('battletime-portal')
     self.Login = function(login){
         var deferred = $q.defer();
 
-        $http.post('http://localhost:3000/api/auth/login', login)
+        $http.post(config.apiRoot + '/auth/login', login)
             .then((response) => {
                 saveUser(response.data);
                 deferred.resolve(response.data)
@@ -44,7 +48,7 @@ angular.module('battletime-portal')
              return deferred.promise;
         };
 
-        $http.post('http://localhost:3000/api/auth/signup', signup)
+        $http.post(config.apiRoot + '/auth/signup', signup)
             .then((response) => {
                 saveUser(response.data);
                 deferred.resolve(response.data)
