@@ -14,15 +14,11 @@ var passport = require('passport');
 var configDb = require('./config/database');
 mongoose.connect(configDb.url);
 
-//require models
-require('./models/user');
-require('./models/event');
-
 //use cors
 var app = express();
+require('./models/_index')(); //load all the models
 
 //app config
-require('./models/_index')(app); //load all the models
 require('./config/handlebars')(app);
 require('./config/passport')(passport);
 app.use(cors());

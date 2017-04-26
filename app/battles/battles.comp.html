@@ -1,0 +1,45 @@
+<div ng-controller="BattlesCtrl"> 
+    
+    <div ng-show="!battles">
+        Loading battles...
+    </div>    
+    
+    <div ng-show="battles">
+    
+        <h2>Battles</h2>
+
+        <h4>New battle</h4>
+
+        <form ng-submit="addBattle()">
+            <ui-select  ng-model="newBattle.participants" theme="bootstrap" multiple>
+                <ui-select-match placeholder="Select or search a person in the list..."> {{$item.username}}</ui-select-match>
+                <ui-select-choices repeat="item in users | filter: $select.search track by item.username">
+                    <div ng-bind-html="item.username | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <input type="submit" class="btn btn-success" value="Add">
+        </form>
+
+        <h4>All battles</h4>
+
+        <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <td>Size</td>
+                        <td>Event</td>
+                        <td>participants</td>
+                        <td>Status</td>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="battle in battles track by $index">
+                        <td>{{battle.participants.length}}</td>
+                        <td>
+                            {{battle.event.name ? battle.event.name : 'None'}}
+                        </td>
+                        <td class="badge-list"><span class="badge badge-info" ng-repeat="user in battle.participants">{{user.username}}</span></td>               
+                        <td>unknown</td>
+                    </tr>
+                </tbody>
+            </table>
+    </div>
+</div>

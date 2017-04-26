@@ -31,8 +31,14 @@ router.post('/:id/actions', (req, res) => {
 
 });
 
+router.put("/:id/battles", (req, res) => {
+    eventCtrl.generateBattles(req.params.id).then((battles) => {
+        res.send(battles);
+    }, (err) => res.status(500).send());
+});
+
 router.post('/:id/participants', (req, res) => { 
-    eventCtrl.signUp(req.params.id, req.body.userId).then( (event) => {     
+    eventCtrl.signUp(req.params.id, req.body).then( (event) => {     
         eventCtrl.getDetails(req.params.id).then( (event) => {
             req.broadcast.signup(event.participants);
             res.send(event.participants);

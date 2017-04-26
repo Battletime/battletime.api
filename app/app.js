@@ -1,4 +1,6 @@
-angular.module('battletime-portal', ["ui.router"])
+angular.module('battletime-portal', ["ui.router", 'ui.select', 'ngSanitize'])
+
+
 .config(function($stateProvider, $urlRouterProvider) {
 
     function getCompState(name){
@@ -12,7 +14,8 @@ angular.module('battletime-portal', ["ui.router"])
     $stateProvider.state(getCompState("portal"));
     $stateProvider.state(getCompState("events"));
     $stateProvider.state(getCompState("users"));
-    
+    $stateProvider.state(getCompState("battles"));
+
     $stateProvider.state({
             name: "eventDetails",
             url: '/event/:eventId',

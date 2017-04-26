@@ -6,4 +6,5 @@ module.exports = function(app, data){
     app.use('/api/events',  require('./events'));
     app.use('/api/auth', require('./auth'));
     app.use('/api/users', require('./users'));
+    app.use('/api/battles', require('./battles'));
 }

@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Event = mongoose.model("Event");
+var Battle = mongoose.model("Battle");
 var qrCode = require('qrcode-npm')
 var Guid = require('guid');
 var Promise = require('promise');
@@ -31,8 +32,14 @@ module.exports = function(){
                     return reject(err);
 
                 event.qrImage = generateQr(event.secret);
-                //event.secret = undefined;
-                resolve(event);
+                event.secret = null;
+
+                self.getBattles(event._id).then( (battles) => {
+                    event = event.toJSON();
+                    event.battles = battles;
+                    resolve(event);
+                });
+                
             });
         });
     }
@@ -66,23 +73,70 @@ module.exports = function(){
             });
         });
     }
-   
-    self.signUp = function(eventId, userId){
+
+    self.getBattles = function(eventId){
+        return Battle.find({ "event": eventId}).populate('participants');
+    }
+
+    self.generateBattles = function(eventId){
          return new Promise(function (resolve, reject) {
             Event.findById(eventId)
                 .exec( (err, event) => {  
                     if(err) return reject(err);
 
-                    if(!_.contains(event.participants, "" + userId)){
-                        event.participants.push(userId);
-                        event.save( (err, event) => {
-                            resolve(event) 
+                    //remove all previous battles for this event
+                    Battle.remove({ "event": event._id}).then( (err) => {
+
+                       
+                        var randomParticipants = _.shuffle(event.participants);
+                        var battles = [];
+
+                        for(var i = 0; i < randomParticipants.length;){
+
+                            var participants = [randomParticipants[i], randomParticipants[i+ 1]];
+                            
+                            //if 3 left, make a 3 way battle
+                            if(randomParticipants.length - i == 3){
+                                participants.push(randomParticipants[i + 2]);
+                                i = randomParticipants.length;
+                            }
+
+                            battles.push(Battle({
+                                participants: participants,
+                                event: event._id,
+                            }));
+
+                             i = i + 2;
+                        }
+
+                        //save as bulk
+                        Battle.collection.insert(battles, (err, reponse) => {
+                            self.getBattles(event._id).then( (battles) => {
+                                resolve(battles)
+                            });
                         });
 
-                    }
-                    else{
-                        resolve(event);
-                    }
+                    })
+
+                });
+         });
+    }
+   
+    self.signUp = function(eventId, participants){
+         return new Promise(function (resolve, reject) {
+            Event.findById(eventId)
+                .exec( (err, event) => {  
+                    if(err) return reject(err);
+
+                    participants.forEach(function(user) {
+                        if(!_.contains(event.participants, "" + user._id)){
+                            event.participants.push(user._id);
+                        }
+                    }, this);
+
+                    event.save( (err, event) => {
+                        resolve(event) 
+                    });
                 });
          });      
     }

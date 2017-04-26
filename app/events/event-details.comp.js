@@ -4,6 +4,9 @@ angular.module('battletime-portal')
     //properties
     $scope.event;
     $scope.users;
+    $scope.form = {
+        participants : []   
+    }
 
     //socket eveents
      $window.socket.on('signup', function(participants){
@@ -17,9 +20,10 @@ angular.module('battletime-portal')
         $scope.getUsers();
     }
 
-    $scope.addParticipant = function(userId){
-        $http.post(config.apiRoot + '/events/' + $scope.event._id + '/participants', { userId: userId })
+    $scope.addParticipants = function(participants){
+        $http.post(config.apiRoot + '/events/' + $scope.event._id + '/participants', participants)
             .then((event) => {
+                $scope.form.participants = []
             }, onError);
     
     }
@@ -36,6 +40,13 @@ angular.module('battletime-portal')
          $http.get(config.apiRoot + '/users')
             .then((response) => {
                 $scope.users = response.data;
+            }, onError);
+    }
+
+    $scope.generateBattles = function(){
+        $http.put(config.apiRoot + '/events/' + $scope.event._id  + '/battles')
+            .then((response) => {
+                $scope.event.battles = response.data;
             }, onError);
     }
 

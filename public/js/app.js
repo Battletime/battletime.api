@@ -1,4 +1,6 @@
-angular.module('battletime-portal', ["ui.router"])
+angular.module('battletime-portal', ["ui.router", 'ui.select', 'ngSanitize'])
+
+
 .config(function($stateProvider, $urlRouterProvider) {
 
     function getCompState(name){
@@ -12,7 +14,8 @@ angular.module('battletime-portal', ["ui.router"])
     $stateProvider.state(getCompState("portal"));
     $stateProvider.state(getCompState("events"));
     $stateProvider.state(getCompState("users"));
-    
+    $stateProvider.state(getCompState("battles"));
+
     $stateProvider.state({
             name: "eventDetails",
             url: '/event/:eventId',
@@ -105,17 +108,65 @@ angular.module('battletime-portal')
 .service('config', function(){
 
     return {
-        //apiRoot: "https://battletime.herokuapp.com/api",
-        apiRoot: "http://localhost:3000/api"
+        apiRoot: "https://battletime.herokuapp.com/api",
+        //apiRoot: "http://localhost:3000/api"
     }
 
 });
+angular.module('battletime-portal')
+.controller('BattlesCtrl', function($scope, $http, $window, config){
+    
+    $scope.battles;
+    $scope.users;
+    $scope.newBattle = {
+        participants: []
+    };
+
+    function init(){
+        $scope.getBattles();
+        $scope.getUsers();
+    }
+
+    $scope.getBattles = function(){
+        $http.get(config.apiRoot + '/battles')
+            .then((response) => {
+                $scope.battles = response.data;
+            }, onError);
+    }
+
+    $scope.getUsers = function(){
+         $http.get(config.apiRoot + '/users')
+            .then((response) => {
+                $scope.users = response.data;
+            }, onError);
+    }
+
+    $scope.addBattle = function(){
+         $http.post(config.apiRoot + '/battles', $scope.newBattle)
+            .then((response) => {
+                $scope.battles.push(response.data);
+                $scope.newBattle = {
+                    participants: []
+                };
+            },onError);
+    }
+
+    function onError(response){
+        console.log(response.data);
+    }
+
+    init();
+})
+
 angular.module('battletime-portal')
 .controller('EventDetailsCtrl', function($scope, $http, $stateParams, $window,  $sce,   config){
 
     //properties
     $scope.event;
     $scope.users;
+    $scope.form = {
+        participants : []   
+    }
 
     //socket eveents
      $window.socket.on('signup', function(participants){
@@ -129,9 +180,10 @@ angular.module('battletime-portal')
         $scope.getUsers();
     }
 
-    $scope.addParticipant = function(userId){
-        $http.post(config.apiRoot + '/events/' + $scope.event._id + '/participants', { userId: userId })
+    $scope.addParticipants = function(participants){
+        $http.post(config.apiRoot + '/events/' + $scope.event._id + '/participants', participants)
             .then((event) => {
+                $scope.form.participants = []
             }, onError);
     
     }
@@ -148,6 +200,13 @@ angular.module('battletime-portal')
          $http.get(config.apiRoot + '/users')
             .then((response) => {
                 $scope.users = response.data;
+            }, onError);
+    }
+
+    $scope.generateBattles = function(){
+        $http.put(config.apiRoot + '/events/' + $scope.event._id  + '/battles')
+            .then((response) => {
+                $scope.event.battles = response.data;
             }, onError);
     }
 
