@@ -5,6 +5,10 @@
     background-color: #a33024;
 }
 
+.badge-list .badge-me{
+    background-color: #5bc0de;
+}
+
 .ui-select-container{
     min-width: 400px;
     display: inline-block;

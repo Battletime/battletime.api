@@ -34,6 +34,7 @@ userSchema.methods.toToken = function(){
     var token = jwt.encode({ username: this._id, role: this.role}, "pointypony");
 
     return { 
+        _id: this._id,
         username: this.username,
         token: token,
         role: this.role,

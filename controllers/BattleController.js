@@ -18,6 +18,11 @@ module.exports = function(){
             .populate('participants event');
     }
 
+    self.getMyBattles = function(userId){
+        return Battle.find({ participants: userId })
+            .populate('participants event');
+    }
+
     //READ
     self.getDetails = function(id){
         return Battle.findById(id)
@@ -30,6 +35,8 @@ module.exports = function(){
             Battle.findById(id).exec( (err, battle) => {   
                 if(err)
                     return reject(err);
+
+                console.log('whoo');
 
                 switch(action){
                     case "start":  battle.startedOn = new Date();;break;

@@ -1,7 +1,40 @@
 <div ng-controller="PortalCtrl" >
 
 <div class="row" ng-show="auth.user">
+
     <h2>Welcome {{auth.user.username}}</h2>
+
+    <h4>My battles</h4>
+
+    <div ng-show="!battles">
+        <p>Loading battles...</p>
+    </div>
+
+    <div ng-show="battles">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>Size</td>
+                    <td>Event</td>
+                    <td>participants</td>
+                    <td>Status</td>
+            </thead>
+            <tbody>
+                <tr ng-repeat="battle in battles track by $index">
+                    <td>{{battle.participants.length}}</td>
+                    <td>
+                        {{battle.event.name ? battle.event.name : 'None'}}
+                    </td>
+                    <td class="badge-list">
+                        <span class="badge badge-info" ng-repeat="user in battle.participants" ng-class="{'badge-me': user._id == auth.user._id }">
+                            {{user.username}}
+                        </span>
+                    </td>               
+                    <td>{{getStatus(battle)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
      <button type="submit" class="btn btn-warning btn-lg" ng-click="logout()">Logout</button>
 </div>

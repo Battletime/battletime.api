@@ -1,11 +1,18 @@
 angular.module('battletime-portal')
-.controller('PortalCtrl', function($scope, $http, authService){
+.controller('PortalCtrl', function($scope, $http, config, authService){
  
     //properties
-    $scope.auth = authService;
+    
+    $scope.battles;
     $scope.login = {
         username: authService.getLastUsedUsername()
     };
+
+    function init(){
+        $scope.auth = authService;
+        $scope.getMyBattles();
+    }
+
 
     //functions
     $scope.logout= function(){
@@ -24,10 +31,25 @@ angular.module('battletime-portal')
                 $scope.signup.password = null;
                 $scope.signup.repeat = null; 
             });
+    }
 
-    
+    $scope.getMyBattles = function(){
+        $http.get(config.apiRoot + '/users/' + $scope.auth.user._id + '/battles')
+            .then((response) => {
+                $scope.battles = response.data;
+            })
+    }
+
+    $scope.getStatus = function(battle){
+        if(!battle.startedOn)
+            return "Not yet started";
+        if(!battle.stoppedOn)
+            return "In progress";
+        else
+            return "Finished";
         
     }
+
 
     $scope.sendLogin = function(){
         authService.Login($scope.login).then(
@@ -38,4 +60,6 @@ angular.module('battletime-portal')
 
       
     }
+
+    init();
 })

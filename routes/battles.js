@@ -9,6 +9,13 @@ router.get('/', function(req, res, next) {
     }, (err) => res.status(500).send());
 });
 
+router.get('/me', function(req, res, next) {
+  battleCtrl.getMyBattles().then((battles) => {
+        res.send(battles);
+    }, (err) => res.status(500).send());
+});
+
+
 router.post('/', (req, res) => {
     battleCtrl.create(req.body).then( (battle) => {
         battleCtrl.getDetails(battle._id).then( (battle) => {
@@ -16,6 +23,17 @@ router.post('/', (req, res) => {
         }) 
     }, (err) => res.status(500).send());
 });
+
+router.post('/:id/actions', (req, res) => {
+
+    battleCtrl.action(req.params.id, req.body.action).then((battle) => {
+         battleCtrl.getDetails(battle._id).then( (battle) => {
+             res.send(battle);
+        }) 
+    }, (err) => res.status(500).send());
+
+});
+
 
 
 module.exports = router;

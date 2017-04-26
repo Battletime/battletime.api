@@ -105,16 +105,28 @@ angular.module('battletime-portal')
 
 })
 angular.module('battletime-portal')
+.service('battleService', function($http, $q, config){
+
+   var self = {};
+
+    self.sendAction = function(battleId, action){
+         return $http.post(config.apiRoot + '/battles/' + battleId+ '/actions', { action: action})
+    }
+
+    return self;
+
+});
+angular.module('battletime-portal')
 .service('config', function(){
 
     return {
-        apiRoot: "https://battletime.herokuapp.com/api",
-        //apiRoot: "http://localhost:3000/api"
+        //apiRoot: "https://battletime.herokuapp.com/api",
+        apiRoot: "http://localhost:3000/api"
     }
 
 });
 angular.module('battletime-portal')
-.controller('BattlesCtrl', function($scope, $http, $window, config){
+.controller('BattlesCtrl', function($scope, $http, $window, config, battleService){
     
     $scope.battles;
     $scope.users;
@@ -125,6 +137,15 @@ angular.module('battletime-portal')
     function init(){
         $scope.getBattles();
         $scope.getUsers();
+    }
+
+    $scope.sendAction = function(index, action){
+        battleService.sendAction($scope.battles[index]._id, action)
+            .then((response) => {
+                $scope.battles[index] = response.data;
+            },(response) =>{
+                console.log(response.data);
+            });
     }
 
     $scope.getBattles = function(){
@@ -275,13 +296,20 @@ angular.module('battletime-portal')
 })
 
 angular.module('battletime-portal')
-.controller('PortalCtrl', function($scope, $http, authService){
+.controller('PortalCtrl', function($scope, $http, config, authService){
  
     //properties
-    $scope.auth = authService;
+    
+    $scope.battles;
     $scope.login = {
         username: authService.getLastUsedUsername()
     };
+
+    function init(){
+        $scope.auth = authService;
+        $scope.getMyBattles();
+    }
+
 
     //functions
     $scope.logout= function(){
@@ -300,10 +328,25 @@ angular.module('battletime-portal')
                 $scope.signup.password = null;
                 $scope.signup.repeat = null; 
             });
+    }
 
-    
+    $scope.getMyBattles = function(){
+        $http.get(config.apiRoot + '/users/' + $scope.auth.user._id + '/battles')
+            .then((response) => {
+                $scope.battles = response.data;
+            })
+    }
+
+    $scope.getStatus = function(battle){
+        if(!battle.startedOn)
+            return "Not yet started";
+        if(!battle.stoppedOn)
+            return "In progress";
+        else
+            return "Finished";
         
     }
+
 
     $scope.sendLogin = function(){
         authService.Login($scope.login).then(
@@ -314,6 +357,8 @@ angular.module('battletime-portal')
 
       
     }
+
+    init();
 })
 
 angular.module('battletime-portal')

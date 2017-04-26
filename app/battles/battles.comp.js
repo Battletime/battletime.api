@@ -1,5 +1,5 @@
 angular.module('battletime-portal')
-.controller('BattlesCtrl', function($scope, $http, $window, config){
+.controller('BattlesCtrl', function($scope, $http, $window, config, battleService){
     
     $scope.battles;
     $scope.users;
@@ -10,6 +10,15 @@ angular.module('battletime-portal')
     function init(){
         $scope.getBattles();
         $scope.getUsers();
+    }
+
+    $scope.sendAction = function(index, action){
+        battleService.sendAction($scope.battles[index]._id, action)
+            .then((response) => {
+                $scope.battles[index] = response.data;
+            },(response) =>{
+                console.log(response.data);
+            });
     }
 
     $scope.getBattles = function(){

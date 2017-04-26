@@ -23,23 +23,40 @@
         <h4>All battles</h4>
 
         <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <td>Size</td>
-                        <td>Event</td>
-                        <td>participants</td>
-                        <td>Status</td>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="battle in battles track by $index">
-                        <td>{{battle.participants.length}}</td>
-                        <td>
-                            {{battle.event.name ? battle.event.name : 'None'}}
-                        </td>
-                        <td class="badge-list"><span class="badge badge-info" ng-repeat="user in battle.participants">{{user.username}}</span></td>               
-                        <td>unknown</td>
-                    </tr>
-                </tbody>
-            </table>
+            <thead>
+                <tr>
+                    <td>Size</td>
+                    <td>Event</td>
+                    <td>participants</td>
+                    <td>Started on</td>
+                    <td>Finished</td>
+                    <td>Actions</td>
+            </thead>
+            <tbody>
+                <tr ng-repeat="battle in battles track by $index">
+                    <td>{{battle.participants.length}}</td>
+                    <td>
+                        {{battle.event.name ? battle.event.name : 'None'}}
+                    </td>
+                    <td class="badge-list"><span class="badge badge-info" ng-repeat="user in battle.participants">{{user.username}}</span></td>               
+                    <td>
+                        <span ng-show="!battle.startedOn">Not yet started</span>
+                        <span ng-show="battle.startedOn">{{battle.startedOn | date:'short'}}</span>           
+                    </td>
+                    <td>
+                        <span ng-show="!battle.stoppedOn">Not yet finished</span>
+                        <span ng-show="battle.stoppedOn">{{battle.stoppedOn | date:'short'}}</span>            
+                    </td>
+                    <td>
+                        0
+                    </td>
+                    <td>
+                        <button ng-show="!battle.startedOn" ng-click="sendAction($index, 'start')" class="btn btn-sm btn-success">Start</button>
+                        <button ng-show="battle.startedOn && !battle.stoppedOn" ng-click="sendAction($index, 'stop')" class="btn btn-sm btn-warning">Stop</button>
+                        <button ng-show="battle.stoppedOn" class="btn btn-sm btn-info" ng-click="sendAction($index, 'reset')">Reset</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
