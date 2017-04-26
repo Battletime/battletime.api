@@ -1,54 +1,61 @@
 <div ng-controller="EventsCtrl"> 
+    
     <h2>Events</h2>
 
-    {{msg}}
-    <h4>New event</h4>
+    <div ng-show="!events">
+        Loading events...
+    </div>    
+    
+    <div ng-show="events">
+    
+        <h4>New event</h4>
 
-    <form ng-submit="addEvent()">
-        <div class="form-inline">
-            <input class="form-control" type="text" ng-model="newEvent.name" required>
-            <select class="form-control" ng-model="newEvent.type" required>
-                <option value="showcase">Showcase</option>
-                <option value="brackets">Brackets</option>
-            </select>
-            <input type="submit" class="btn btn-success" value="Add">
-        </div>
-    </form>
+        <form ng-submit="addEvent()">
+            <div class="form-inline">
+                <input class="form-control" type="text" ng-model="newEvent.name" required>
+                <select class="form-control" ng-model="newEvent.type" required>
+                    <option value="showcase">Showcase</option>
+                    <option value="brackets">Brackets</option>
+                </select>
+                <input type="submit" class="btn btn-success" value="Add">
+            </div>
+        </form>
 
-    <h4>All events</h4>
+        <h4>All events</h4>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <td>name</td>
-                <td>start</td>
-                <td>end</td>
-                <td>participants</td>
-                <td>Actions</td>
-        </thead>
-        <tbody>
-            <tr>
-                <td col-span="5" class="text-center" ng-show="!events">Loading events...</td>
-            </tr>
-            <tr ng-repeat="event in events track by $index">
-                <td><a ui-sref="eventDetails({eventId: event._id})">{{event.name}}</td>
-                <td>
-                    <span ng-show="!event.startedOn">Not yet started</span>
-                    <span ng-show="event.startedOn">{{event.startedOn | date:'short'}}</span>           
-                </td>
-                <td>
-                    <span ng-show="!event.stoppedOn">Not yet finished</span>
-                    <span ng-show="event.stoppedOn">{{event.stoppedOn | date:'short'}}</span>            
-                </td>
-                <td>
-                    0
-                </td>
-                <td>
-                    <button ng-show="!event.startedOn" ng-click="sendAction($index, 'start')" class="btn btn-sm btn-success">Start</button>
-                    <button ng-show="event.startedOn && !event.stoppedOn" ng-click="sendAction($index, 'stop')" class="btn btn-sm btn-warning">Stop</button>
-                    <button ng-show="event.stoppedOn" class="btn btn-sm btn-info" ng-click="sendAction($index, 'reset')">Reset</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>name</td>
+                    <td>start</td>
+                    <td>end</td>
+                    <td>participants</td>
+                    <td>Actions</td>
+            </thead>
+            <tbody>
+                <tr>
+                    <td col-span="5" class="text-center" ng-show="!events">Loading events...</td>
+                </tr>
+                <tr ng-repeat="event in events track by $index">
+                    <td><a ui-sref="eventDetails({eventId: event._id})">{{event.name}}</td>
+                    <td>
+                        <span ng-show="!event.startedOn">Not yet started</span>
+                        <span ng-show="event.startedOn">{{event.startedOn | date:'short'}}</span>           
+                    </td>
+                    <td>
+                        <span ng-show="!event.stoppedOn">Not yet finished</span>
+                        <span ng-show="event.stoppedOn">{{event.stoppedOn | date:'short'}}</span>            
+                    </td>
+                    <td>
+                        0
+                    </td>
+                    <td>
+                        <button ng-show="!event.startedOn" ng-click="sendAction($index, 'start')" class="btn btn-sm btn-success">Start</button>
+                        <button ng-show="event.startedOn && !event.stoppedOn" ng-click="sendAction($index, 'stop')" class="btn btn-sm btn-warning">Stop</button>
+                        <button ng-show="event.stoppedOn" class="btn btn-sm btn-info" ng-click="sendAction($index, 'reset')">Reset</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
