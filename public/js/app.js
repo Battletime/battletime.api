@@ -350,7 +350,9 @@ angular.module('battletime-portal')
 
     $scope.sendLogin = function(){
         authService.Login($scope.login).then(
-        (user) => {}, 
+        (user) => {
+            $scope.getMyBattles();
+        }, 
         (response) => {
             $scope.login.errors = response.errors
         });
