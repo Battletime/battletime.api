@@ -11,7 +11,7 @@ angular.module('battletime-portal')
     function init(){
         $scope.auth = authService;
 
-        if(auth.user){
+        if($scope.auth.user){
             $scope.getMyBattles();
         }
         
