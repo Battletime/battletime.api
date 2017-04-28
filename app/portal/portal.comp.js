@@ -44,17 +44,6 @@ angular.module('battletime-portal')
             })
     }
 
-    $scope.getStatus = function(battle){
-        if(!battle.startedOn)
-            return "Not yet started";
-        if(!battle.stoppedOn)
-            return "In progress";
-        else
-            return "Finished";
-        
-    }
-
-
     $scope.sendLogin = function(){
         authService.Login($scope.login).then(
         (user) => {
