@@ -31,11 +31,11 @@ module.exports = function(){
                 if(err)
                     return reject(err);
 
-                event.qrImage = generateQr(event.secret);
-                event.secret = null;
 
                 self.getBattles(event._id).then( (battles) => {
                     event = event.toJSON();
+                    event.qrImage = generateQr(event.secret);
+                    event.secret = null;
                     event.battles = battles;
                     resolve(event);
                 });
