@@ -22,6 +22,12 @@ module.exports = function(){
         return Event.find();
     }
 
+    self.getMyEvents = function(userId){
+        return Evennt.find({ participants: userId })
+            .populate('participants');
+    }
+
+
     //READ ONE
     self.getDetails = function(id){
         return new Promise(function (resolve, reject) {
