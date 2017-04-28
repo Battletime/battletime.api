@@ -147,6 +147,30 @@ module.exports = function(){
          });      
     }
 
+    self.signupWithSecret = function(eventSecret, userId){
+        
+         return new Promise(function (resolve, reject) {
+            Event.findOne({ 'secret': eventSecret})
+                .exec( (err, event) => {  
+                     
+                    if(err) return reject(err);
+
+    
+                    if(!_.contains(event.participants, "" + userId)){
+                        event.participants.push(userId);
+                        event.save( (err, event) => {
+                            console.log(err);
+                            resolve(event) 
+                        });
+                    }        
+                    else{
+                        return reject();
+                    }        
+                });
+         });      
+
+    }
+
     function generateQr(secret){
         var qr = qrCode.qrcode(4, 'M');
         qr.addData(secret);

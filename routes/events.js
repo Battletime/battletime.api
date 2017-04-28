@@ -37,6 +37,17 @@ router.put("/:id/battles", (req, res) => {
     }, (err) => res.status(500).send());
 });
 
+router.post('/secret/:secret', (req, res) => { 
+    eventCtrl.signupWithSecret(req.params.secret, req.body.userId)
+        .then( (event) => {     
+            eventCtrl.getDetails(event._id).then( (event) => {
+                req.broadcast.signup(event.participants);
+                res.send(event);
+            }, (err) => res.status(500).send());
+        }, (err) => res.status(500).send());
+});
+
+
 router.post('/:id/participants', (req, res) => { 
     eventCtrl.signUp(req.params.id, req.body).then( (event) => {     
         eventCtrl.getDetails(req.params.id).then( (event) => {
