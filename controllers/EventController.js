@@ -23,7 +23,6 @@ module.exports = function(){
     }
 
     self.getMyEvents = function(userId){
-        
         return Event.find({ participants: userId })
             .populate('participants');
     }
