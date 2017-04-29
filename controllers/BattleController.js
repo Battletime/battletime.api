@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Battle = mongoose.model("Battle");
+var User = mongoose.model("User");
 var _ = require('underscore');
 
 module.exports = function(){
@@ -36,8 +37,6 @@ module.exports = function(){
                 if(err)
                     return reject(err);
 
-                console.log('whoo');
-
                 switch(action){
                     case "start":  battle.startedOn = new Date();;break;
                     case "stop":  battle.stoppedOn = new Date();;break;
@@ -48,6 +47,22 @@ module.exports = function(){
                 battle.save((err, battle) =>  resolve(battle)); 
             });
         });
+    }
+
+    self.createRandom = function(userId){
+          return new Promise(function (resolve, reject) {          
+              User.random(userId, (err, user) => {
+
+                var battle = new Battle({
+                    participants: [userId, user._id],
+                    startedOn: new Date()
+                })
+
+                battle.save((err, battle) => {
+                    resolve(battle);
+                })               
+              });
+          });
     }
 
     return self;

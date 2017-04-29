@@ -28,6 +28,19 @@ userSchema.methods.compareHash = function(password) {
     return areEqual; 
 };
 
+userSchema.statics.random = function(userId, callback) {
+  this.count(function(err, count) {
+    var rand = Math.floor(Math.random() * count);
+    this.findOne().skip(rand)
+        .exec((err, user) => {            
+            if(user._id != userId)
+                callback(err, user);
+            else
+                this.random(userId, callback);
+        });
+  }.bind(this));
+};
+
 
 userSchema.methods.toToken = function(){
     //user has authenticated correctly thus we create a JWT token 

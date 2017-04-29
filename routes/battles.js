@@ -34,6 +34,14 @@ router.post('/:id/actions', (req, res) => {
 
 });
 
+router.post('/random/:userId', (req, res) => {
+    battleCtrl.createRandom(req.params.userId).then((battle) => {
+        battleCtrl.getDetails(battle._id).then( (battle) => {
+             res.send(battle);
+        }) 
+    });
+});
+
 
 
 module.exports = router;
