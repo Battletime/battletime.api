@@ -17,7 +17,6 @@ angular.module('battletime-portal')
         
     }
 
-
     //functions
     $scope.logout= function(){
         authService.Logout();

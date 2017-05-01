@@ -9,6 +9,14 @@ router.get('/', function(req, res, next) {
     }, (err) => res.status(500).send());
 });
 
+/* GET users listing. */
+router.get('/:battleId', function(req, res, next) {
+  battleCtrl.getDetails(req.params.battleId).then((battle) => {
+        res.send(battle);
+    }, (err) => res.status(500).send());
+});
+
+
 router.get('/me', function(req, res, next) {
   battleCtrl.getMyBattles().then((battles) => {
         res.send(battles);
