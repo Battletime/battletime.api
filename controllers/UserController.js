@@ -20,28 +20,20 @@ module.exports = function(){
         return User.find();
     }
 
-    self.uploadAvatar = function(userId, req, res){
-        User.findById(userId).exec( (err, user) => {   
+    self.uploadAvatar = function(userId, rawImage){
+        return new Promise(function (resolve, reject) {
+            User.findById(userId).exec( (err, user) => {   
+                var base64Data = rawImage.replace(/^data:image\/png;base64,/, "");
+                var location = "/images/" + user._id + ".jpg";
+                require("fs").writeFile(location, base64Data, 'base64', function(err) {
+                    if(er)
+                        return reject(err);
 
-            //setup multer
-            var storage = multer.diskStorage({
-                destination: function (req, file, callBack) {
-                    callBack(null, '/images');
-                },
-                filename: function (req, file, callBack) {
-                    callBack(null, user.id + ".png");
-                }
-            });
-
-            var upload = multer({ storage: storage }).single('file');
-            upload(req, res, function(err) {
-                if(err) {
-                    return res.end("Error uploading file.");
-                }
-                res.end("File is uploaded");
-            });
+                    user.imageUri = location;
+                    user.save((err, user) =>  resolve(user)); 
+                });   
+            });     
         });
-        
     }
 
     return self;

@@ -11,11 +11,12 @@ router.get('/', function(req, res, next) {
     }, (err) => res.status(500).send());
 });
 
-/* GET battles of user */
+/* POST update the avatar */
 router.post('/:id/avatar', function(req, res, next) {
-    //in exception the battleCtrl arranges the response
     console.log("starting upload of avatar!");
-    userCtrl.uploadAvatar(req.params.id, req, res);
+    userCtrl.uploadAvatar(req.params.id, req.body).then( (user) => {
+        res.send(user);
+    }, (err) => res.status(500).send());
 });
 
 /* GET battles of user */
