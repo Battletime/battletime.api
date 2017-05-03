@@ -39,6 +39,15 @@ router.post('/:id/actions', (req, res) => {
              res.send(battle);
         }) 
     }, (err) => res.status(500).send());
+});
+
+
+router.post('/:id/votes', (req, res) => {
+    battleCtrl.vote(req.params.id, req.body).then((battle) => {
+         battleCtrl.getDetails(battle._id).then( (battle) => {
+             res.send(battle);
+        }) 
+    }, (err) => res.status(500).send());
 
 });
 

@@ -27,7 +27,7 @@ module.exports = function(){
     //READ
     self.getDetails = function(id){
         return Battle.findById(id)
-            .populate('participants event');
+            .populate('participants event winner');
     }
 
     //OTHER
@@ -44,6 +44,28 @@ module.exports = function(){
                     default: break;
                 }
 
+                battle.save((err, battle) =>  resolve(battle)); 
+            });
+        });
+    }
+
+    self.vote = function(id, vote){
+        return new Promise(function (resolve, reject) {
+            Battle.findById(id).exec( (err, battle) => {   
+                if(err)
+                    return reject(err);
+
+                if(battle.containsVoteOf(vote.byUserId))
+                    return reject({ status: 400 });
+
+                vote.timestamp = new Date();
+                battle.votes.push(vote);
+
+                //als er 2 votes zijn, zijn we klaar
+                if(battle.votes.length >= 2){
+                    battle.decideWinner();
+                    battle.stoppedOn = new Date();
+                }
                 battle.save((err, battle) =>  resolve(battle)); 
             });
         });
