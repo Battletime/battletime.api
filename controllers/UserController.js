@@ -23,7 +23,7 @@ module.exports = function(){
     self.uploadAvatar = function(userId, rawImage){
         return new Promise(function (resolve, reject) {
             User.findById(userId).exec( (err, user) => {   
-                if(err)
+                if(err || !rawImage)
                     reject(err);
                 
                                  
