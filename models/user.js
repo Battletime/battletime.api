@@ -41,6 +41,19 @@ userSchema.statics.random = function(userId, callback) {
   }.bind(this));
 };
 
+function getRandomInt(min, max) {
+  
+}
+
+userSchema.pre('save', function(next) {
+    if(!this.imageUri){
+        var min = Math.ceil(1);
+        var max = Math.floor(9);
+        this.imageUri = "/images/hero_" + (Math.floor(Math.random() * (max - min)) + min + ".png");
+    }
+    next();
+});
+
 
 userSchema.methods.toToken = function(){
     //user has authenticated correctly thus we create a JWT token 
