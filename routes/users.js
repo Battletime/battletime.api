@@ -14,9 +14,11 @@ router.get('/', function(req, res, next) {
 /* POST update the avatar */
 router.post('/:id/avatar', function(req, res, next) {
     console.log("starting upload of avatar!");
-    userCtrl.uploadAvatar(req.params.id, req.body.baseString).then( (user) => {
-        res.send(user);
-    }, (err) => res.status(500).send(err));
+    console.log(req.body.baseString);
+    res.send(req.body.baseString);
+    // userCtrl.uploadAvatar(req.params.id, req.body.baseString).then( (user) => {
+    //     res.send(user);
+    // }, (err) => res.status(500).send(err));
 });
 
 /* GET battles of user */
