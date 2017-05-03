@@ -14,6 +14,7 @@ router.get('/', function(req, res, next) {
 /* GET battles of user */
 router.post('/:id/avatar', function(req, res, next) {
     //in exception the battleCtrl arranges the response
+    console.log("starting upload of avatar!");
     userCtrl.uploadAvatar(req.params.id, req, res);
 });
 
