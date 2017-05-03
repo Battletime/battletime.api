@@ -41,10 +41,6 @@ userSchema.statics.random = function(userId, callback) {
   }.bind(this));
 };
 
-function getRandomInt(min, max) {
-  
-}
-
 userSchema.pre('save', function(next) {
     if(!this.imageUri){
         var min = Math.ceil(1);

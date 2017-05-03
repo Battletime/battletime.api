@@ -12,6 +12,12 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET battles of user */
+router.post('/:id/avatar', function(req, res, next) {
+    //in exception the battleCtrl arranges the response
+    battleCtrl.uploadAvatar(req.params.id, req, res);
+});
+
+/* GET battles of user */
 router.get('/:id/battles', function(req, res, next) {
   battleCtrl.getMyBattles(req.params.id).then( (battles) => {
         res.send(battles);

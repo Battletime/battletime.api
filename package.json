@@ -21,6 +21,7 @@
     "jwt-simple": "^0.5.1",
     "mongoose": "^4.8.6",
     "morgan": "~1.7.0",
+    "multer": "^1.3.0",
     "nodemon": "^1.11.0",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
