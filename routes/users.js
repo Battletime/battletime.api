@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
 /* GET battles of user */
 router.post('/:id/avatar', function(req, res, next) {
     //in exception the battleCtrl arranges the response
-    battleCtrl.uploadAvatar(req.params.id, req, res);
+    userCtrl.uploadAvatar(req.params.id, req, res);
 });
 
 /* GET battles of user */
