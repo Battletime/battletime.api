@@ -29,13 +29,12 @@ module.exports = function(){
                      console.log("User not found with id " + userId);
                     reject(err);
                 }
-                    
-                
+                                 
                 console.log("User found with id " + user._id);
 
                 var base64Data = rawImage.replace(/^data:image\/png;base64,/, "");
                 var location = "/images/" + user._id + ".jpg";
-                require("fs").writeFile(location, base64Data, 'base64', function(err) {
+                require("fs").writeFile("public" + location, base64Data, 'base64', function(err) {
                     console.log("Write file complete");
 
                     if(err){

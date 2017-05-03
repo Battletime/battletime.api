@@ -24,8 +24,8 @@ require('./config/passport')(passport);
 app.use(cors());
 app.use(passport.initialize());
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '5mb'}));
+app.use(bodyParser.urlencoded({ limit: '5mb', extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
