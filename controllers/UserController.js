@@ -25,8 +25,7 @@ module.exports = function(){
             User.findById(userId).exec( (err, user) => {   
                 if(err || !rawImage)
                     return reject(err);
-                
-                                 
+                                    
                 var base64Data = rawImage.replace(/^data:image\/jpeg;base64,/, "");
                 var location = "/images/" + user._id + ".jpg";
                 require("fs").writeFile("public" + location, base64Data, 'base64', function(err) {
