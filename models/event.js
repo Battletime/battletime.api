@@ -16,7 +16,11 @@ var eventSchema = new Schema({
     startedOn: Date,
     stoppedOn: Date,
     type: { type: String, required: true},
-    participants: [{ type: String, ref: "User" }]
+    participants: [{ type: String, ref: "User" }],
+    winners: [{
+        user: { type: String, ref: "User" },
+        place: String,
+    }]
 }, schemaOptions);
 
 eventSchema.methods.reset = function(){

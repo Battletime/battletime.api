@@ -8,6 +8,11 @@ angular.module('battletime-portal')
         participants : []   
     }
 
+    $scope.eventForm = {
+        participants : []   
+    }
+
+
     //socket events!
      $window.socket.on('signup', function(participants){
         $scope.event.participants = participants;
@@ -18,6 +23,8 @@ angular.module('battletime-portal')
         $scope.event.participants = participants;
         $scope.$apply(); //scope modified outside angular context
     });
+
+
 
     function init(){
         $scope.getEvent($stateParams.eventId);
@@ -40,10 +47,40 @@ angular.module('battletime-portal')
             }, onError);
     }
 
+    $scope.isWinner = function(user){
+        var isWinner = false;
+        $scope.event.winners.forEach((winner) => {
+            if(winner.user == user._id)
+                isWinner = true;
+        });
+        return isWinner;
+    }
+
+    $scope.addWinner = function(user){
+        if($scope.isWinner(user)){
+            $scope.event.winners.forEach((winner, index, object) => {
+                if(winner.user == user._id)
+                     object.splice(index, 1);
+            });
+        }
+        else{
+            $scope.event.winners.push({ user: user._id });
+        }
+    }
+
+    $scope.submitWinners = function(){
+        
+    }
+
+    $scope.generateEvent = function(participant){
+
+    }
+
     $scope.getEvent = function(id){
         $http.get(config.apiRoot + '/events/' + id)
             .then((response) => {
                 $scope.event = response.data;
+                $scope.form.participants = event.participants;
                 $scope.event.qrImage =  $sce.trustAsHtml($scope.event.qrImage);
             }, onError);
     }

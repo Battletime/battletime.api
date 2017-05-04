@@ -8,7 +8,7 @@ angular.module('battletime-portal')
     }
 
     $scope.aanmelden = function(secret){
-        $http.post('http://localhost:3000/api/events/'+secret+'/participants')
+        $http.post(config.apiRoot + '/events/'+secret+'/participants')
             .then((event) => {
             });
     }
