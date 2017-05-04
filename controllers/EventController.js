@@ -147,6 +147,21 @@ module.exports = function(){
          });      
     }
 
+     self.signOut = function(eventId, userId){
+         return new Promise(function (resolve, reject) {
+            Event.findById(eventId)
+                .exec( (err, event) => {  
+                    if(err) return reject(err);
+
+                    event.participants.remove(userId);
+
+                    event.save( (err, event) => {
+                        resolve(event) 
+                    });
+                });
+         });      
+    }
+
     self.signupWithSecret = function(eventSecret, userId){
         
          return new Promise(function (resolve, reject) {

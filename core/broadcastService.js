@@ -6,6 +6,10 @@ module.exports = function(io){
         io.emit('signup', user);
     }
 
+    self.signout = function(user){
+        io.emit('signout', user);
+    }
+
     return self;
 
 }

@@ -5,41 +5,36 @@
     </div>    
 
     <div ng-show="event">
+
+        <h2>{{event.name}}</h2>
         
-        <div ng-show"event">
-            <h2>{{event.name}}</h2>
-        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Details</h2>
+                <div ng-bind-html="event.qrImage"></div>
+            </div>
+            <div class="col-md-6">
 
-        <div ng-bind-html="event.qrImage">
+                <h2>Participants</h2>
+                <h4>Add participant</h4>
 
-        </div>
+                <form ng-submit="addParticipants(form.participants)" class="inline">
+                    <ui-select  ng-model="form.participants" theme="bootstrap" multiple>
+                        <ui-select-match placeholder="Select or search a person in the list..."> {{$item.username}}</ui-select-match>
+                        <ui-select-choices repeat="item in users | filter: $select.search track by item._id">
+                            <div ng-bind-html="item.username | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                    <input type="submit" class="btn btn-success btn-xs" value="Add">
+                </form>
 
-        <h4>Add participant</h4>
+                <h4>All participants ({{event.participants.length}})</h4>
+                <div class="badge-list">
+                    <span class="badge badge-info delete" ng-repeat="user in event.participants" ng-click="removeParticipant(user)">{{user.username}}</span>   
+                </div>
 
-        <form ng-submit="addParticipants(form.participants)">
-            <ui-select  ng-model="form.participants" theme="bootstrap" multiple>
-                <ui-select-match placeholder="Select or search a person in the list..."> {{$item.username}}</ui-select-match>
-                <ui-select-choices repeat="item in users | filter: $select.search track by item._id">
-                    <div ng-bind-html="item.username | highlight: $select.search"></div>
-                </ui-select-choices>
-            </ui-select>
-            <input type="submit" class="btn btn-success" value="Add">
-        </form>
-
-        <h4>All participants ({{event.participants.length}})</h4>
-
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <td>name</td>
-                    <td></td>
-            </thead>
-            <tbody>
-                <tr ng-repeat="user in event.participants track by $index">
-                    <td>{{user.username}}</td><td></td>
-                </tr>
-            </tbody>
-        </table>
+            </div><!-- end col-md-6 -->
+        </div><!-- end row -->
 
         <h4>Generate battles</h4>
 

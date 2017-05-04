@@ -1,5 +1,5 @@
 angular.module('battletime-portal')
-.controller('EventDetailsCtrl', function($scope, $http, $stateParams, $window,  $sce,   config){
+.controller('EventShowcaseCtrl', function($scope, $http, $stateParams, $window,  $sce,   config){
 
     //properties
     $scope.event;
@@ -8,16 +8,12 @@ angular.module('battletime-portal')
         participants : []   
     }
 
-    //socket events!
+    //socket eveents
      $window.socket.on('signup', function(participants){
         $scope.event.participants = participants;
         $scope.$apply(); //scope modified outside angular context
     });
 
-     $window.socket.on('signout', function(participants){
-        $scope.event.participants = participants;
-        $scope.$apply(); //scope modified outside angular context
-    });
 
     function init(){
         $scope.getEvent($stateParams.eventId);
@@ -27,17 +23,9 @@ angular.module('battletime-portal')
     $scope.addParticipants = function(participants){
         $http.post(config.apiRoot + '/events/' + $scope.event._id + '/participants', participants)
             .then((event) => {
-                //participant is added via socket
                 $scope.form.participants = []
             }, onError);
     
-    }
-
-    $scope.removeParticipant = function(participant){
-        $http.delete(config.apiRoot + '/events/' + $scope.event._id + '/participants/' + participant._id)
-            .then((event) => {
-                //participant is removed via socket
-            }, onError);
     }
 
     $scope.getEvent = function(id){

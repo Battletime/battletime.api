@@ -21,6 +21,12 @@ angular.module('battletime-portal', ["ui.router", 'ui.select', 'ngSanitize'])
             url: '/event/:eventId',
             templateUrl: 'templates/events/event-details.comp.html'
     });
+
+        $stateProvider.state({
+            name: "eventShowcase",
+            url: '/event/:eventId/showcase',
+            templateUrl: 'templates/events/event-showcase.comp.html'
+    });
     
 
     $urlRouterProvider.otherwise(function($injector) {

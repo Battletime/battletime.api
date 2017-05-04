@@ -52,7 +52,16 @@ router.post('/:id/participants', (req, res) => {
     eventCtrl.signUp(req.params.id, req.body).then( (event) => {     
         eventCtrl.getDetails(req.params.id).then( (event) => {
             req.broadcast.signup(event.participants);
-            res.send(event.participants);
+            res.send(event);
+        }, (err) => res.status(500).send());
+    }, (err) => res.status(500).send());
+});
+
+router.delete('/:id/participants/:userId', (req, res) => { 
+    eventCtrl.signOut(req.params.id, req.params.userId).then( (event) => {     
+        eventCtrl.getDetails(req.params.id).then( (event) => {
+            req.broadcast.signout(event.participants);
+            res.send(event);
         }, (err) => res.status(500).send());
     }, (err) => res.status(500).send());
 });

@@ -1,0 +1,67 @@
+<div ng-controller="EventDetailsCtrl"> 
+    
+    <div ng-show="!event">
+        Loading event...
+    </div>    
+
+    <div ng-show="event">
+        
+        <div ng-show"event">
+            <h2>{{event.name}}</h2>
+        </div>
+
+        <div ng-bind-html="event.qrImage">
+
+        </div>
+
+        <h4>Add participant</h4>
+
+        <form ng-submit="addParticipants(form.participants)">
+            <ui-select  ng-model="form.participants" theme="bootstrap" multiple>
+                <ui-select-match placeholder="Select or search a person in the list..."> {{$item.username}}</ui-select-match>
+                <ui-select-choices repeat="item in users | filter: $select.search track by item._id">
+                    <div ng-bind-html="item.username | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <input type="submit" class="btn btn-success" value="Add">
+        </form>
+
+        <h4>All participants ({{event.participants.length}})</h4>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>name</td>
+                    <td></td>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in event.participants track by $index">
+                    <td>{{user.username}}</td><td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Generate battles</h4>
+
+        <button class="btn btn-primary btn-lg" ng-click="generateBattles()">Generate battles</button>
+
+        <h4>All Battles ({{event.battles.length}})</h4>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>size</td>
+                    <td>participants</td>
+            </thead>
+            <tbody>
+                <tr ng-repeat="battle in event.battles track by $index">
+                    <td>{{battle.participants.length}}</td>
+                    <td class="badge-list"><span class="badge badge-info" ng-repeat="user in battle.participants">{{user.username}}</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
