@@ -24,7 +24,7 @@ module.exports = function(){
         return new Promise(function (resolve, reject) {
             User.findById(userId).exec( (err, user) => {   
                 if(err || !rawImage)
-                    reject(err);
+                    return reject(err);
                 
                                  
                 var base64Data = rawImage.replace(/^data:image\/jpeg;base64,/, "");
