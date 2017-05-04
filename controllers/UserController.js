@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
 var User = mongoose.model("User");
 var _ = require('underscore');
-var imgur = require('../services/imgur'),
-path = require('path');
+var imgur = require('../services/imgur');
+var path = require('path');
+
 
 imgur.setClientID("d5147569a055369");
 
@@ -41,8 +42,6 @@ module.exports = function(){
                         user.imageUri = res.data.link;
                         user.save((err, user) =>  resolve(user)); 
                     });
-                    
-                   
                 });   
             });     
         });
