@@ -7,11 +7,12 @@
     <div ng-show="event" class="text-center">
         
         <div ng-show"event">
-            <h1 class="text-primary">{{event.name}}</h1>
+            <h1 class="stroke-red">{{event.name}}</h1>
         </div>
 
-        <div ng-show="event.status.id == '0'">
-            <p>This event is almost starting</p>
+        <div ng-show="event.status.id != '1'">
+            <p ng-show="event.status.id == '0'">This event is almost starting</p>
+            <p ng-show="event.status.id == '2'">The battle is over. Time to relax!</p>
 
             <div class="avatar-list">
                 <div class="avatar" ng-repeat="user in event.participants">
@@ -19,13 +20,58 @@
                     <span>{{user.username}}</span>
                 </div>   
             </div>
-
-
-
         </div>
 
         <div ng-show="event.status.id == '1'">
             <p>It's battle time!</p>
+
+            <div class="battle currentBattle" ng-show="currentBattle">
+                <div class="battle">
+                    <div class="avatar" ng-show="currentBattle.participants[0]" ng-class="{'leave-left': loadNextBattle}">
+                        <img ng-src="{{currentBattle.participants[0].imageUri | image}}">
+                        <span>{{currentBattle.participants[0].username}}</span>
+                    </div>
+                    <span class="stroke-red vs"  ng-show="currentBattle.participants[2]">V.S</span>
+                    <div class="avatar" ng-show="currentBattle.participants[2]" ng-class="{'leave-top': loadNextBattle}">
+                        <img ng-src="{{currentBattle.participants[2].imageUri | image}}">
+                        <span>{{currentBattle.participants[2].username}}</span>
+                    </div>
+                    <span class="stroke-red vs">V.S</span>
+                    <div class="avatar" ng-show="currentBattle.participants[1]" ng-class="{'leave-right': loadNextBattle}">
+                        <img ng-src="{{currentBattle.participants[1].imageUri | image}}">
+                        <span>{{currentBattle.participants[1].username}}</span>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="currentBattle" ng-show="!currentBattle">
+                <p>Battle starting soon!</p>
+            </div>
+         
+            <div ng-show="nextBattle" class="nextBattle">
+                 <p>Up next</p>
+                <div class="battle">
+                
+                    <div class="avatar" ng-show="nextBattle.participants[0]">
+                        <img ng-src="{{nextBattle.participants[0].imageUri | image}}">
+                        <span>{{nextBattle.participants[0].username}}</span>
+                    </div>
+                    <span class="stroke-red vs">V.S</span>
+                    <div class="avatar" ng-show="nextBattle.participants[1]">
+                        <img ng-src="{{nextBattle.participants[1].imageUri | image}}">
+                        <span>{{nextBattle.participants[1].username}}</span>
+                    </div>
+                    <span class="stroke-red vs"  ng-show="nextBattle.participants[2]">V.S</span>
+                    <div class="avatar" ng-show="nextBattle.participants[2]">
+                        <img ng-src="{{nextBattle.participants[2].imageUri | image}}">
+                        <span>{{nextBattle.participants[2].username}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="currentBattle" ng-show="!nextBattle">
+                <p>No more battles after this one</p>
+            </div>
+        
         </div>
 
     </div>

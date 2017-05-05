@@ -8,40 +8,32 @@
 
         <h2>{{event.name}} </h2>
 
-        <div class="well">
-            <button ui-sref="eventShowcase({eventId : event._id })" class="btn btn-flat btn-info">Showcase</button>
+        <h2>Participants</h2>
+        <h4>Add participant</h4>
+
+        <form ng-submit="addParticipants(form.participants)" class="inline">
+            <ui-select  ng-model="form.participants" theme="bootstrap" multiple>
+                <ui-select-match placeholder="Select or search a person in the list..."> {{$item.username}}</ui-select-match>
+                <ui-select-choices repeat="item in users | filter: $select.search track by item._id">
+                    <div ng-bind-html="item.username | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <input type="submit" class="btn btn-success btn-xs" value="Add">
+        </form>
+
+        <h4>All participants ({{event.participants.length}})</h4>
+        <div class="badge-list">
+            <span class="badge badge-info delete" ng-repeat="user in event.participants" ng-click="removeParticipant(user)">{{user.username}}</span>   
         </div>
-        
-        <div class="row">
-            <div class="col-md-6">
 
-                <h2>Participants</h2>
-                <h4>Add participant</h4>
+        <h2>Details</h2>
 
-                <form ng-submit="addParticipants(form.participants)" class="inline">
-                    <ui-select  ng-model="form.participants" theme="bootstrap" multiple>
-                        <ui-select-match placeholder="Select or search a person in the list..."> {{$item.username}}</ui-select-match>
-                        <ui-select-choices repeat="item in users | filter: $select.search track by item._id">
-                            <div ng-bind-html="item.username | highlight: $select.search"></div>
-                        </ui-select-choices>
-                    </ui-select>
-                    <input type="submit" class="btn btn-success btn-xs" value="Add">
-                </form>
+        <div class="qr" ng-bind-html="event.qrImage"></div>
 
-                <h4>All participants ({{event.participants.length}})</h4>
-                <div class="badge-list">
-                    <span class="badge badge-info delete" ng-repeat="user in event.participants" ng-click="removeParticipant(user)">{{user.username}}</span>   
-                </div>
-
-            </div>
-            <div class="col-md-1"></div>
-             <div class="col-md-3">
-                <h2>Details</h2>
-                <div ng-bind-html="event.qrImage"></div>
-            </div><!-- end col-md-6 -->
-        </div><!-- end row -->
-
-        <hr>
+        <button ng-click="showcase()" class="btn btn-flat btn-info">Showcase</button>
+        <button ng-show="!event.startedOn" ng-click="sendEventAction('start')" class="btn btn-success">Start</button>
+        <button ng-show="event.startedOn && !event.stoppedOn" ng-click="sendEventAction('stop')" class="btn btn-warning">Stop</button>
+        <button ng-show="event.stoppedOn" class="btn btn-info" ng-click="sendEventAction('reset')">Reset</button>
 
         <!--<h4>Generate new Event</h4>
         
@@ -62,7 +54,7 @@
         </form>
 
         <hr>-->
-        <h2>Winners</h2>
+        <!--<h2>Winners</h2>
 
         <button class="btn btn-success btn-lg" ng-click="submitWinners()">Submit winners</button>
 
@@ -70,7 +62,7 @@
             <span class="badge badge-info delete" ng-repeat="user in event.participants" 
             ng-class="{'badge-success': isWinner(user) }" 
             ng-click="addWinner(user)">{{user.username}}</span>   
-        </div>
+        </div>-->
 
         <hr>
         <h2>Battles</h2>
@@ -79,16 +71,43 @@
 
         <h4>All Battles ({{event.battles.length}})</h4>
 
+        <h4>All battles</h4>
+
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <td>size</td>
+                    <td>Size</td>
+                    <td>Event</td>
                     <td>participants</td>
+                    <td>Started on</td>
+                    <td>Finished</td>
+                    <td>Actions</td>
             </thead>
             <tbody>
                 <tr ng-repeat="battle in event.battles track by $index">
                     <td>{{battle.participants.length}}</td>
-                    <td class="badge-list"><span class="badge badge-info" ng-repeat="user in battle.participants">{{user.username}}</span></td>
+                    <td>
+                        {{battle.event.name ? battle.event.name : 'None'}}
+                    </td>
+                    <td class="badge-list"><span class="badge badge-info" ng-repeat="user in battle.participants">{{user.username}}</span></td>               
+                    <td>
+                        <span ng-show="!battle.startedOn">Not yet started</span>
+                        <span ng-show="battle.startedOn">{{battle.startedOn | date:'short'}}</span>           
+                    </td>
+                    <td>
+                        <span ng-show="!battle.stoppedOn">Not yet finished</span>
+                        <span ng-show="battle.stoppedOn">{{battle.stoppedOn | date:'short'}}</span>            
+                    </td>
+                    <td>
+                        0
+                    </td>
+                    <td>
+                        <button ng-show="!battle.startedOn" ng-click="sendAction($index, 'start')" class="btn btn-sm btn-success">Start</button>
+                        <button ng-show="battle.startedOn && !battle.stoppedOn" ng-click="sendAction($index, 'stop')" class="btn btn-sm btn-warning">Stop</button>
+                        <button ng-show="battle.startedOn && !battle.stoppedOn" ng-click="next($index);" class="btn btn-sm btn-success">Next</button>
+
+                        <button ng-show="battle.stoppedOn" class="btn btn-sm btn-info" ng-click="sendAction($index, 'reset')">Reset</button>
+                    </td>
                 </tr>
             </tbody>
         </table>

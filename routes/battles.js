@@ -36,6 +36,7 @@ router.post('/:id/actions', (req, res) => {
 
     battleCtrl.action(req.params.id, req.body.action).then((battle) => {
          battleCtrl.getDetails(battle._id).then( (battle) => {
+             req.broadcast.battleAction(battle);
              res.send(battle);
         }) 
     }, (err) => res.status(500).send());

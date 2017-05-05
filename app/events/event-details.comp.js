@@ -1,5 +1,5 @@
 angular.module('battletime-portal')
-.controller('EventDetailsCtrl', function($scope, $http, $stateParams, $window,  $sce,   config){
+.controller('EventDetailsCtrl', function($scope, $http, $stateParams, battleService, $window,  $sce,   config){
 
     //properties
     $scope.event;
@@ -10,6 +10,50 @@ angular.module('battletime-portal')
 
     $scope.eventForm = {
         participants : []   
+    }
+
+    $scope.sendAction = function(index, action){
+        if($scope.event.battles.length > index){
+            battleService.sendAction($scope.event.battles[index]._id, action)
+                .then((response) => {
+                    $scope.event.battles[index] = response.data;
+                },(response) =>{
+                    console.log(response.data);
+                });
+        }
+    }
+
+    $scope.showcase = function(){
+        $http.put(config.apiRoot + '/events/' + $scope.event._id + '/showcase', {})
+            .then((response) => {
+                    alert('This event is now begin showed on the big screen!');
+                },(response) =>{
+                    console.log(response.data);
+                });
+    }
+
+    $scope.sendEventAction = function(action){
+       
+            $http.post(config.apiRoot + '/events/' + $scope.event._id + '/actions', { action: action})
+                .then((response) => {
+                    $scope.event = response.data;
+                },(response) =>{
+                    console.log(response.data);
+                });
+    }
+
+    $scope.next = function(index){  
+        if(index == ($scope.event.battles.length - 1)) //no next battle
+        {
+            //stop event
+            $scope.sendEventAction('stop');
+        }
+        else
+        {
+            $scope.sendAction((index + 1), 'start')
+        }
+        $scope.sendAction(index, 'stop', );
+     
     }
 
 

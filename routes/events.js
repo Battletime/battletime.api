@@ -26,10 +26,21 @@ router.post('/', (req, res) => {
 router.post('/:id/actions', (req, res) => {
 
     eventCtrl.action(req.params.id, req.body.action).then((event) => {
-        res.send(event);
+        eventCtrl.getDetails(event._id).then( (event) => {
+            req.broadcast.eventAction(event);
+            res.send(event);
+        }, (err) => res.status(500).send());
     }, (err) => res.status(500).send());
 
 });
+
+router.put('/:id/showcase', (req, res) => {
+    eventCtrl.getDetails(req.params.id).then( (event) => {
+        req.broadcast.eventAction(event);
+        res.send(event);
+    }, (err) => res.status(500).send());
+});
+
 
 router.put("/:id/battles", (req, res) => {
     eventCtrl.generateBattles(req.params.id).then((battles) => {

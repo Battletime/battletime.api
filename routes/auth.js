@@ -6,9 +6,7 @@ var User = mongoose.model('User');
 router.post('/signup', function(req, res, next){
 
     // we are checking to see if the user trying to login already exists
-    User.findOne({ 'username' :  req.body.username }, function(err, user) {
-
-        
+    User.findOne({ 'email': req.body.email.toLowerCase() }, function(err, user) {
 
         // if there are any errors, return the error
         if (err)
@@ -25,6 +23,7 @@ router.post('/signup', function(req, res, next){
 
             // set the user's local credentials
             newUser.username =  req.body.username;
+            newUser.email = req.body.email.toLowerCase();
             newUser.password = newUser.generateHash(req.body.password);
             newUser.role = "user";
 
@@ -46,7 +45,7 @@ router.post('/signup', function(req, res, next){
 router.post('/login', function(req, res, next) {
     
     // we are checking to see if the user trying to login already exists
-    User.findOne({ 'username' :  req.body.username }, function(err, user) {
+    User.findOne({ 'email' :  req.body.email.toLowerCase() }, function(err, user) {
 
         if(!user){
              return res.status(401).json({ errors: ['Wrong credentials'] });

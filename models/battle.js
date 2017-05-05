@@ -13,6 +13,7 @@ var schemaOptions = {
 
 var battleSchema = new Schema({ 
     event: { type: String, ref: "Event" }, 
+    meta: String,
     startedOn: Date,
     stoppedOn: Date,
     winner: { type: String, ref: "User" },

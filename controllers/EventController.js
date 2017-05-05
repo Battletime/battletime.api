@@ -93,7 +93,7 @@ module.exports = function(){
                     //remove all previous battles for this event
                     Battle.remove({ "event": event._id}).then( (err) => {
 
-                       
+                        var counter = 0;
                         var randomParticipants = _.shuffle(event.participants);
                         var battles = [];
 
@@ -110,9 +110,11 @@ module.exports = function(){
                             battles.push(Battle({
                                 participants: participants,
                                 event: event._id,
+                                meta: counter
                             }));
 
-                             i = i + 2;
+                            counter++;
+                            i = i + 2;
                         }
 
                         //save as bulk

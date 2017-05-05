@@ -39,7 +39,8 @@ angular.module('battletime-portal', ["ui.router", 'ui.select', 'ngSanitize'])
   };
 }).filter('image', function(config){
     return function(input){
-        if(input[0] == '/')
+        
+        if(input && input[0] == '/')
             return config.serverRoot + input;
         else{
             return input;
