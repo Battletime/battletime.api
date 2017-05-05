@@ -14,7 +14,7 @@ router.post('/signup', function(req, res, next){
 
         // check to see if theres already a user with that username
         if (user) {
-              return res.status(400).send({errors: ["That username is already taken."]});
+              return res.status(400).send({errors: ["That email is already taken."]});
         } else {
 
             // if there is no user with that username
