@@ -61,7 +61,8 @@
                 <input required type="password"  ng-model="login.password" class="form-control" name="password">
             </div>
 
-            <button type="submit" class="btn btn-warning btn-lg">Login</button>
+            <button type="submit" ng-disabled="!login.password  || !login.email"
+                 class="btn btn-warning btn-lg">Login</button>
         </form>
 
         <hr>
@@ -79,6 +80,10 @@
         <!-- LOGIN FORM -->
         <form ng-submit="sendSignup()" method="post">
             <div class="form-group">
+                <label>Username</label>
+                <input required type="text" ng-model="signup.username" class="form-control" name="username">
+            </div>
+            <div class="form-group">
                 <label>Email</label>
                 <input required type="text" ng-model="signup.email" class="form-control" name="email">
             </div>
@@ -91,7 +96,8 @@
                 <input required type="password" ng-model="signup.repeat" class="form-control" name="repeat">
             </div>
 
-            <button type="submit" class="btn btn-warning btn-lg">Signup</button>
+            <button type="submit" ng-disabled="!signup.username || !signup.password  || !signup.email  || !signup.repeat"
+                class="btn btn-warning btn-lg">Signup</button>
         </form>
 
         <hr>
