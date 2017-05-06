@@ -24,7 +24,7 @@ router.post('/signup', function(req, res, next){
             // set the user's local credentials
             newUser.username =  req.body.username;
             newUser.email = req.body.email.toLowerCase();
-            newUser.password = newUser.generateHash(req.body.password);
+            newUser.password = req.body.password;//newUser.generateHash(req.body.password);
             newUser.role = "user";
 
             newUser.save(function(err, user){
