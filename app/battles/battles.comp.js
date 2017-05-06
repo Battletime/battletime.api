@@ -4,7 +4,7 @@ angular.module('battletime-portal')
     $scope.battles;
     $scope.users;
     $scope.newBattle = {
-        participants: []
+        participants: [] 
     };
 
     function init(){

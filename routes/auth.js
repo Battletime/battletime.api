@@ -28,7 +28,6 @@ router.post('/signup', function(req, res, next){
             newUser.role = "user";
 
             newUser.save(function(err, user){
-                console.log(newUser);
                 if(err){
                     return res.status(500).send({ form: err, errors: ["Oops, something went wrong!"]});
                 }
@@ -50,6 +49,8 @@ router.post('/login', function(req, res, next) {
         if(!user){
              return res.status(401).json({ errors: ['Wrong credentials'] });
         }
+
+        console.log(user);
 
         if(!user.compareHash(req.body.password)){
             return res.status(401).json({ errors: ['Wrong credentials' ]});

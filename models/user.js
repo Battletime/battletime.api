@@ -15,16 +15,15 @@ var userSchema = new Schema({
 // methods ======================
 // generating a hash
 userSchema.methods.generateHash = function(password) {
-    console.log(password);
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 // methods ======================
 // compare a hash
 userSchema.methods.compareHash = function(password) {
-    console.log(password);
+    
+    //var areEqual = this.password == password;
     var areEqual = bcrypt.compareSync(password, this.password);
-    console.log(areEqual);
     return areEqual; 
 };
 

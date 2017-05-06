@@ -12,7 +12,6 @@ module.exports = function(io){
 
     self.eventAction = function(event){
         io.emit('event.action', event);
-         console.log('event emitted!');
     }
 
     self.battleAction = function(battle){

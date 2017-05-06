@@ -176,7 +176,6 @@ module.exports = function(){
                     if(!_.contains(event.participants, "" + userId)){
                         event.participants.push(userId);
                         event.save( (err, event) => {
-                            console.log(err);
                             resolve(event) 
                         });
                     }        
