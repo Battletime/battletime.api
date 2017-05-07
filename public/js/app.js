@@ -311,6 +311,18 @@ angular.module('battletime-portal')
         }
     }
 
+    $scope.setWinner = function(battleId, user){
+        $http.put(config.apiRoot + '/battles/' + battleId + '/winner', {userId: user._id})
+            .then((response) => {
+                $scope.event.battles.forEach((battle, index, list) => {
+                    if(battle._id == response.data._id){
+                         $scope.event.battles[index] = response.data;
+                    }
+                });
+               
+            }, onError)
+    }
+
     $scope.submitWinners = function(){
         
     }
@@ -380,6 +392,14 @@ angular.module('battletime-portal')
         $scope.event = event;
         setBattles($scope.event);
         $scope.$apply(); //scope modified outside angular context
+    });
+
+    $window.socket.on('battle.update', function(battle){
+        if($scope.currentBattle._id == battle.__id)
+        {
+            $scope.currentBattle = battle;
+            $scope.$apply(); //scope modified outside angular context
+        }
     });
 
 

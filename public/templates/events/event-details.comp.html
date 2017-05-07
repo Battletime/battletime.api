@@ -77,19 +77,21 @@
             <thead>
                 <tr>
                     <td>Size</td>
-                    <td>Event</td>
-                    <td>participants</td>
+                    <td>Select winner</td>
                     <td>Started on</td>
                     <td>Finished</td>
                     <td>Actions</td>
             </thead>
             <tbody>
-                <tr ng-repeat="battle in event.battles track by $index">
+                <tr ng-repeat="battle in event.battles  | orderBy: 'meta' track by $index">
                     <td>{{battle.participants.length}}</td>
-                    <td>
-                        {{battle.event.name ? battle.event.name : 'None'}}
-                    </td>
-                    <td class="badge-list"><span class="badge badge-info" ng-repeat="user in battle.participants">{{user.username}}</span></td>               
+                    <td class="badge-list">
+                        <span ng-repeat="user in battle.participants" ng-click="setWinner(battle._id, user)">
+                            <span  class="badge badge-info delete" ng-class="{'badge-success': battle.winner._id == user._id }">                  
+                                {{user.username}}
+                            </span>
+                        </span>
+                    </td>           
                     <td>
                         <span ng-show="!battle.startedOn">Not yet started</span>
                         <span ng-show="battle.startedOn">{{battle.startedOn | date:'short'}}</span>           

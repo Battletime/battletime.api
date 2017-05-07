@@ -29,6 +29,14 @@ angular.module('battletime-portal')
         $scope.$apply(); //scope modified outside angular context
     });
 
+    $window.socket.on('battle.update', function(battle){
+        if($scope.currentBattle._id == battle.__id)
+        {
+            $scope.currentBattle = battle;
+            $scope.$apply(); //scope modified outside angular context
+        }
+    });
+
 
     $window.socket.on('battle.action', function(updatedBattle){
         $scope.loadNextBattle = true;

@@ -52,6 +52,16 @@ router.post('/:id/votes', (req, res) => {
 
 });
 
+router.put('/:id/winner', (req, res) => {
+    battleCtrl.setWinner(req.params.id, req.body.userId).then((battle) => {
+         battleCtrl.getDetails(battle._id).then( (battle) => {
+             req.broadcast.battleUpdate(battle);
+             res.send(battle);
+        }) 
+    }, (err) => res.status(500).send());
+
+});
+
 router.post('/random/:userId', (req, res) => {
     battleCtrl.createRandom(req.params.userId).then((battle) => {
         battleCtrl.getDetails(battle._id).then( (battle) => {

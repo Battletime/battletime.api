@@ -18,6 +18,10 @@ module.exports = function(io){
         io.emit('battle.action', battle);
     }   
 
+    self.battleUpdate = function(battle){
+        io.emit('battle.update', battle);
+    }
+
     return self;
 
 }

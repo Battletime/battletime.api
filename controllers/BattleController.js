@@ -49,6 +49,22 @@ module.exports = function(){
         });
     }
 
+    self.setWinner = function(id, userId){
+        return new Promise(function (resolve, reject) {
+            Battle.findById(id).exec( (err, battle) => {   
+                if(err)
+                    return reject(err);
+
+                if(battle.winner == userId){
+                    userId = null;
+                }
+          
+                battle.winner = userId;
+                battle.save((err, battle) =>  resolve(battle)); 
+            });
+        });
+    }
+
     self.vote = function(id, vote){
         return new Promise(function (resolve, reject) {
             Battle.findById(id).exec( (err, battle) => {   

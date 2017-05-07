@@ -81,7 +81,7 @@ module.exports = function(){
     }
 
     self.getBattles = function(eventId){
-        return Battle.find({ "event": eventId}).populate('participants');
+        return Battle.find({ "event": eventId}).populate('participants winner');
     }
 
     self.generateBattles = function(eventId){
