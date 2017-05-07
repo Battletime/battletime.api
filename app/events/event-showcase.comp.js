@@ -30,7 +30,7 @@ angular.module('battletime-portal')
     });
 
     $window.socket.on('battle.update', function(battle){
-        if($scope.currentBattle._id == battle.__id)
+        if($scope.currentBattle._id == battle._id)
         {
             $scope.currentBattle = battle;
             $scope.$apply(); //scope modified outside angular context

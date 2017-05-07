@@ -17,6 +17,10 @@
     background-color: #5bc0de;
 }
 
+img.winner {
+    border:5px solid green;
+}
+
 .ui-select-container{
     min-width: 400px;
     display: inline-block;
@@ -181,6 +185,38 @@ form.inline .btn{
         width:100px;
         height:100px;
     }
+
+
+.flip {
+    -webkit-perspective: 800;
+    width: 100%;
+    min-height: 200px;
+    position: relative;
+    margin-top:10px;
+}
+.flip .card.flipped {
+    -webkit-transform: rotatey(-180deg);
+}
+.flip .card {
+    width: 100%;
+    -webkit-transform-style: preserve-3d;
+    -webkit-transition: 0.5s;
+    left:0px;
+}
+.flip .card .face {
+    width: 100%;
+    position: absolute;
+    -webkit-backface-visibility: hidden ;
+    z-index: 2;
+}
+.flip .card .front {
+    position: absolute;
+    z-index: 1;
+}
+.flip .card .back {
+    -webkit-transform: rotatey(-180deg);
+}
+
 
 
 /** SHOWCASE END **/
