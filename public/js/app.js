@@ -250,9 +250,7 @@ angular.module('battletime-portal')
         else
         {
             $scope.sendAction((index + 1), 'start')
-        }
-        $scope.sendAction(index, 'stop', );
-     
+        }     
     }
 
 
