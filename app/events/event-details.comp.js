@@ -43,6 +43,7 @@ angular.module('battletime-portal')
     }
 
     $scope.next = function(index){  
+          $scope.sendAction(index, 'stop'); //stop current battle
         if(index == ($scope.event.battles.length - 1)) //no next battle
         {
             //stop event
