@@ -10,9 +10,42 @@
             <h1 class="stroke-red">{{event.name}}</h1>
         </div>
 
-        <div ng-show="event.status.id != '1'">
-            <p ng-show="event.status.id == '0'">This event is almost starting</p>
-            <p ng-show="event.status.id == '2'">The battle is over. Time to relax!</p>
+        <div ng-show="event.status.id == '0'">
+            <p >This event is almost starting</p>
+
+            <div class="promo-container showcase-content" ng-class="{ 'show-promo': showPromo}">
+                <div class="avatar-list">
+                    <div class="avatar" ng-repeat="user in event.participants">
+                        <img ng-src="{{user.imageUri | image}}">
+                        <span>{{user.username}}</span>
+                    </div>   
+                </div>
+                <div class="promo row text-center">
+                    <p>Download the new Battletime app!</p>
+                    <img src="/images/promo.png">
+                </div>
+            </div>
+
+
+            <div class="banner" class="nextBattle">
+                <img src="/images/bashj.jpg">
+                <div>
+                    <p>
+                        Want to join this battle event? <br>
+                        Use the new <b>battletime app</b> and scan the QR code!
+                    </p>
+                </div>
+                <div class="qr" ng-bind-html="event.qrImage"></div>
+            </div>
+  
+
+      
+        </div>
+
+        
+        <div ng-show="event.status.id == '2'">
+
+            <p >The battle is over. Time to relax!</p>
 
             <div class="avatar-list">
                 <div class="avatar" ng-repeat="user in event.participants">

@@ -1,8 +1,9 @@
 angular.module('battletime-portal')
-.controller('EventShowcaseCtrl', function($scope, $state, $http, $timeout, $stateParams, $window, $filter, $sce,   config){
+.controller('EventShowcaseCtrl', function($scope, $state, $http, $timeout, $stateParams, $window, $filter, $sce, config){
 
     //properties
     $scope.event;
+    $scope.showPromo;
 
     $scope.statusFiler = {
         status: 'idle'
@@ -10,6 +11,11 @@ angular.module('battletime-portal')
 
     //socket eveents
      $window.socket.on('signup', function(participants){
+        $scope.event.participants = participants;
+        $scope.$apply(); //scope modified outside angular context
+    });
+
+    $window.socket.on('signout', function(participants){
         $scope.event.participants = participants;
         $scope.$apply(); //scope modified outside angular context
     });
@@ -22,6 +28,7 @@ angular.module('battletime-portal')
         setBattles($scope.event);
         $scope.$apply(); //scope modified outside angular context
     });
+
 
     $window.socket.on('battle.action', function(updatedBattle){
         $scope.loadNextBattle = true;
@@ -46,10 +53,18 @@ angular.module('battletime-portal')
         $scope.nextBattle = firstIdle;
     }
 
+    function toggleShowPromo(){
+          $timeout(() => { 
+              $scope.showPromo = !$scope.showPromo;
+              toggleShowPromo();
+          }, 10000);
+    }
+
     
     function init(){
         document.getElementById('navbar').style.display = 'none'; //hide menu;
         $scope.getEvent($stateParams.eventId);
+        toggleShowPromo();
     }
 
     $scope.getEvent = function(id){

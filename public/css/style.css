@@ -72,8 +72,11 @@ form.inline .btn{
 
 /** SHOWCASE START **/
 .showcase{
-    padding:5%;
+
 }
+    .showcase-content{
+        padding:5%;
+    }
 
     .showcase h1{
         font-size:400%;
@@ -139,6 +142,44 @@ form.inline .btn{
         -ms-transform: translate(400%, 0); /* IE 9 */
         -webkit-transform: translate(400%, 0); /* Safari */
         transform: translate(400%, 0);
+    }
+
+    .showcase .banner{
+        display: flex;
+        position: absolute;
+        bottom:5%;
+        left:5%;
+        width:90%;
+        justify-content: space-between;
+    }
+
+    .showcase .promo-container{
+        transition: transofrm 1.5s;
+        -webkit-transition: transform 1.5s; /* Safari */
+        position: relative;
+    }
+
+    .showcase .promo{
+        position: absolute;
+        left:100%;
+        width:100%;
+        top:0px;
+    }
+
+    .showcase .promo img{
+        width:600px;
+    }
+
+    .showcase .show-promo {
+        -ms-transform: translate(-100%, 0); /* IE 9 */
+        -webkit-transform: translate(100%, 0); /* Safari */
+        transform: translate(-100%, 0);
+    }
+    
+
+    .showcase .banner img {
+        width:100px;
+        height:100px;
     }
 
 
