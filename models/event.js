@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var schemaOptions = {
@@ -6,39 +6,39 @@ var schemaOptions = {
     virtuals: true
   },
   toJSON: {
-    virtuals: true 
-  }
+    virtuals: true
+  },
+  usePushEach: true
 };
 
-var eventSchema = new Schema({ 
-    name: String, 
+var eventSchema = new Schema(
+  {
+    name: String,
     secret: String,
     startedOn: Date,
     stoppedOn: Date,
-    type: { type: String, required: true},
+    type: { type: String, required: true },
     participants: [{ type: String, ref: "User" }],
-    winners: [{
+    winners: [
+      {
         user: { type: String, ref: "User" },
-        place: String,
-    }]
-}, schemaOptions);
+        place: String
+      }
+    ]
+  },
+  schemaOptions
+);
 
-eventSchema.methods.reset = function(){
-    this.startedOn = null; 
-    this.stoppedOn = null;
-}
+eventSchema.methods.reset = function() {
+  this.startedOn = null;
+  this.stoppedOn = null;
+};
 
-eventSchema.virtual('status').get(function(){
-    if(!this.startedOn)
-        return { id: 0, text: "Not started" };
-    if(!this.stoppedOn)
-        return { id: 1, text: "In progress" }; 
-    else
-        return { id: 2, text: "Finished" }; 
+eventSchema.virtual("status").get(function() {
+  if (!this.startedOn) return { id: 0, text: "Not started" };
+  if (!this.stoppedOn) return { id: 1, text: "In progress" };
+  else return { id: 2, text: "Finished" };
 });
 
-
-
 // set up a mongoose model and pass it using module.exports
-module.exports = mongoose.model('Event', eventSchema);
-
+module.exports = mongoose.model("Event", eventSchema);
